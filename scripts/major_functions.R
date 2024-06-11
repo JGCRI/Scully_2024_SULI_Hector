@@ -68,5 +68,158 @@ get_temp_data <- function(file, scenario = "historical", include_unc = F) {
 }
 
 
+###############################
+### Optim-Related Functions ###
+###############################
+
+
+# TODO: Add temperature scaling to run_hector
+
+# run_hector - function to run Hector using a given ini file and set of params
+#
+# args:
+#   ini_file    - path to the ini file to use to run Hector
+#   params      - vector of Hector parameters to modify
+#   vals        - vector of values to use for those Hector parameters
+#   yrs         - year range to get Hector data from
+#   vars        - Hector variables to get data on
+#   include_unc - boolean indicating whether to include upper/lower bounds on
+#                 values (default: FALSE)
+#
+# returns: data frame containing the variables' values for the given date range
+#
+# note: assumes params and vals are the same length and that each paraneter is
+#       stored at the same index as its corresponding value
+run_hector <- function(ini_file, params, vals, yrs, vars, include_unc = F) {
+  core <- newcore(ini_file)
+  
+  # Setting parameter values
+  for (i in 1:length(params)) {
+    setvar(core = core, 
+           dates = NA, 
+           var = params[i], 
+           values = vals[i], 
+           unit = getunits(params[i]))
+  }
+  
+  # Running core and fetching data
+  run(core)
+  data <- fetchvars(core, yrs, vars = vars)
+  
+  # Adding in upper and lower bounds if desired
+  if (include_unc) {
+    data$upper <- data$value
+    data$lower <- data$value
+  }
+  
+  shutdown(core)
+  return(data)
+}
+
+
+# write_metric - writes the value for a metric to the output file
+#
+# args:
+#   name - name of metric
+#   val  - value of metric
+#
+# returns: nothing
+#
+# Note: The value of the metric is rounded to 3 sig figs when outputted
+write_metric <- function(name, val, file) {
+  write(paste(name, signif(val, 3)), file = file, append = TRUE)
+}
+
+
+# objective_fn - flexible objective function that can be used to calculate the
+#                error between observed and predicted data for a Hector run with
+#                the given values for a set of parameters
+#
+# args:
+#   obs_data    - Hector-style data frame with observed data
+#   ini_file    - path to the ini file to use to run Hector
+#   params      - vector of Hector parameters to modify
+#   pars        - vector of values to use for those Hector parameters
+#   yrs         - year range to get Hector data from
+#   vars        - Hector variables to get data on
+#   error_fn    - function to calculate error between observed/predicted vals
+#   include_unc - boolean indicating whether upper/lower bounds needed for 
+#                 error_fn (default: FALSE)
+#
+# returns: error between observed and predicted data calculated via error_fn
+#
+# note: uses an error function from error_functions.R
+# note: assumes error_fn takes obs_data and hector_data as inputs and outputs a
+#       real-valued error
+objective_fn <- function(obs_data, ini_file, params, par, yrs, vars, error_fn, 
+                         include_unc = F) {
+  # Running Hector
+  hector_data <- run_hector(ini_file = ini_file,
+                            params = params,
+                            vals = par,
+                            yrs = yrs,
+                            vars = vars,
+                            include_unc = include_unc)
+  
+  # Returning error from model run
+  return(error_fn(obs_data, hector_data))
+}
+
+# run_optim - function to run optim with an objective function based on a given
+#             set of Hector parameters and an error function. Also outputs 
+#             results of optim call
+#
+# args:
+#   obj_fn      - objective function to use
+#   obs_data    - Hector-style data frame with observed data
+#   ini_file    - path to the ini file to use to run Hector
+#   params      - vector of Hector parameters to modify
+#   yrs         - year range to get Hector data from
+#   vars        - Hector variables to get data on
+#   error_fn    - function to calculate error between observed/predicted vals
+#   include_unc - boolean indicating whether upper/lower bounds needed for 
+#                 error_fn (default: FALSE)
+#   output_file - path to file to append table to
+#
+# returns: Nothing, but outputs optimal parameters and objective function
+#          value to given output file
+#
+# note: uses an error function from error_functions.R
+run_optim <- function(obj_fn, obs_data, ini_file, params, yrs, vars, error_fn, 
+                      include_unc = F, output_file) {
+  # Creating vector of default parameters
+  default_core <- newcore(ini_file)
+  defaults <- fetchvars(default_core, dates = NA, vars = params)$value
+  shutdown(default_core)
+  
+  # Applying optim
+  optim_output <- optim(par = defaults, 
+                        fn = obj_fn, 
+                        obs_data = obs_data, 
+                        ini_file = ini_file, 
+                        params = params,
+                        yrs = yrs,
+                        vars = vars, 
+                        error_fn = error_fn, 
+                        include_unc = include_unc)
+  
+  # Extract vals from optim output
+  best_pars <- optim_output$par
+  min_error <- optim_output$value
+  
+  # Output optimal parameterization
+  write.table(data.frame(parameters = best_pars, values = min_error),
+              file = output_file,
+              append = TRUE,
+              quote = FALSE,
+              sep = "\t",
+              row.names = FALSE)
+  
+  # Output value of objective function
+  write_metric("Objective Function Value:", min_error, output_file)
+  
+}
+
 # Everything below should be copied from the table metrics script
 # TODO: Once finished with that script, copy it in and rework it
+# TODO: Delete old version of run_hector when table making script is copied in

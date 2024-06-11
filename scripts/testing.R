@@ -20,10 +20,13 @@ source(MAJ_FUNC_PATH)
 data1 <- get_co2_data(CO2_PATH)
 
 ini_file <- system.file("input/hector_ssp245.ini", package = "hector")
-core <- newcore(ini_file)
-run(core)
-data2 <- fetchvars(core, 2000:2005, vars = c(CONCENTRATIONS_CO2(), GLOBAL_TAS()))
+data2 <- run_hector(ini_file, 
+                    params = ECS(), 
+                    vals = 3.5, 
+                    yrs = 2000:2005, 
+                    vars = c(GLOBAL_TAS(), CONCENTRATIONS_CO2()))
 
 data3 <- get_temp_data(TEMP_PATH)
 
 rbind(data1, data2, data3)
+
