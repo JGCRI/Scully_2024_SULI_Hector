@@ -3,7 +3,7 @@
 source(here::here("scripts", "ex_fxns.R"))
 
 library(assertthat)
-library(hector)
+#library(hector)
 
 # Let's test to see if the right things are returne
 assert_that(is.string(hello_world()))
