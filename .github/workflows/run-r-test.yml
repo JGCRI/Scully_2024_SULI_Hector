@@ -27,7 +27,7 @@ jobs:
 
     - name: Install R packages
       env:
-      GITHUB_PAT: ${{ secrets.GPAT }}
+      GITHUB_PAT: ${{ secrets.GITHUB_PAT }}
       run: |
         Rscript -e 'remotes::install_github("jgcri/hector")'    # The Hector package & dependeices
         Rscript -e 'install.packages(c("here", "assertthat"))'  # Add any packages your script needs
