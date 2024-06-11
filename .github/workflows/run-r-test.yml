@@ -21,8 +21,13 @@ jobs:
       with:
         r-version: '4.3.3'  # specify the version of R you need
 
+    - name: Install remotes package
+      run: |
+        Rscript -e 'install.packages("remotes")'
+
     - name: Install R packages
       run: |
+        Rscript -e 'remotes::install_github("jgcri/hector")'    # The Hector package & dependeices
         Rscript -e 'install.packages(c("here", "assertthat"))'  # Add any packages your script needs
 
     - name: Run R script
