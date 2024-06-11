@@ -21,15 +21,25 @@ jobs:
       with:
         r-version: '4.3.3'  # specify the version of R you need
 
-    - name: Install remotes package
+    - name: Install system dependencies
       run: |
-        Rscript -e 'install.packages("remotes")'
+        sudo apt-get install -y libcurl4-openssl-dev libssl-dev libgit2-dev
 
-    - name: Install R packages
+    - name: Install R package dependencies
       run: |
-        Rscript -e 'remotes::install_github("jgcri/hector")'    # The Hector package & dependeices
-        Rscript -e 'install.packages(c("here", "assertthat"))'  # Add any packages your script needs
+        install.packages('remotes')
+        remotes::install_github('r-lib/gitcreds')
 
-    - name: Run R script
+    - name: Set up GitHub PAT
+      env:
+        GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        Rscript scripts/ex_test.R
+        gitcreds::gitcreds_set()
+
+    - name: Install Hector package
+      run: |
+        remotes::install_github('jgcri/hector')
+
+    - name: Check
+      run: |
+        Rscript -e 'remotes::install_github("jgcri/hector")'
