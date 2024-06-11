@@ -55,7 +55,7 @@ get_temp_data <- function(file, scenario = "historical", include_unc = F) {
 
   # Adding in new columns to match Hector data frames
   temp_data$scenario <- scenario
-  temp_data$variable <- GLOBAL_TAS()
+  temp_data$variable <- GMST()
   temp_data$units <- "degC"
 
   # Removing upper and lower bounds, if desired
