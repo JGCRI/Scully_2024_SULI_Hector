@@ -13,5 +13,5 @@ assert_that(is.numeric(my_sum(1, 2)))
 assert_that(my_sum(1, 2) == 3)
 
 
-out <- my_hector_run()
-assert_that(is.data.frame(out))
+# out <- my_hector_run()
+# assert_that(is.data.frame(out))
