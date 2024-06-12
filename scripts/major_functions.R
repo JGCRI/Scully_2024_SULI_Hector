@@ -7,6 +7,8 @@
 library(hector)
 library(dplyr)
 
+source(here::here("scripts", "error_functions.R"))
+
 ################################
 ### Comparison Data Fetchers ###
 ################################
@@ -147,7 +149,7 @@ rel_to_interval <- function(data, var, start, end) {
 #
 # args:
 #   ini_file    - path to the ini file to use to run Hector
-#   params      - vector of Hector parameters to modify
+#   params      - vector of Hector params to modify. if NULL, does default run
 #   vals        - vector of values to use for those Hector parameters
 #   yrs         - year range to get Hector data from
 #   vars        - Hector variables to get data on
@@ -162,12 +164,14 @@ run_hector <- function(ini_file, params, vals, yrs, vars, include_unc = F) {
   core <- newcore(ini_file)
   
   # Setting parameter values
-  for (i in 1:length(params)) {
-    setvar(core = core, 
-           dates = NA, 
-           var = params[i], 
-           values = vals[i], 
-           unit = getunits(params[i]))
+  if (!is.null(params)) {
+    for (i in 1:length(params)) {
+      setvar(core = core, 
+             dates = NA, 
+             var = params[i], 
+             values = vals[i], 
+             unit = getunits(params[i]))
+    }
   }
   
   # Running core and fetching data
