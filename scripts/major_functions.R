@@ -68,12 +68,80 @@ get_temp_data <- function(file, scenario = "historical", include_unc = F) {
 }
 
 
-###############################
-### Optim-Related Functions ###
-###############################
+############################
+### Data Frame Functions ###
+############################
 
 
-# TODO: Add temperature scaling to run_hector
+# get_var_change - function to find the change in a variable between a start
+#                  and end date
+#
+# args:
+#   data  - data frame outputted by fetchvars
+#   var   - string containing the Hector variable to find the change in
+#   start - start year
+#   end   - end year
+#
+# returns: single value indicating the change in variable from start year to
+#          end year
+get_var_change <- function(data, var, start, end) {
+  initial_val <- filter(data, variable == var & year == start)$value
+  final_val   <- filter(data, variable == var & year == end)$value
+  return(final_val - initial_val)
+}
+
+
+# get_interval_avg - function to find the average value of a Hector variable
+#                    over a given time interval
+#
+# args:
+#   data  - data frame outputted by run_hector (or fetchvars)
+#   var   - string containing the Hector variable to average
+#   start - start year for finding average
+#   end   - end year for finding average
+#
+# returns: average value of var across the provided interval
+get_interval_avg <- function(data, var, start, end) {
+  data %>%
+    subset(variable == var) %>%
+    subset(start <= year & year <= end) %>%
+    .$value -> interval_vals
+  return(mean(interval_vals))
+}
+
+
+# rel_to_val - function to adjust values of a Hector variable to be relative
+#              to a new value
+#
+# args:
+#   data      - data frame outputted by fetchvars
+#   var       - string containing the Hector variable to adjust
+#   benchmark - value to make variable relative to
+#
+# returns: data frame containing the new values for var relative to benchmark
+rel_to_val <- function(data, var, benchmark) {
+  # Updating all of the values for var that are in data
+  data %>%
+    mutate(value = ifelse(variable == var, value - benchmark, value)) -> data
+  return(data)
+}
+
+
+# rel_to_interval - function to normalize values of a Hector variable to a
+#                   reference period
+#
+# args:
+#   data  - data frame outputted by fetchvars
+#   var   - string containing the Hector variable to adjust
+#   start - start year for reference period
+#   end   - end year for reference period
+#
+# returns: data frame containing the normalized values for that variable
+rel_to_interval <- function(data, var, start, end) {
+  benchmark <- get_interval_avg(data, var, start, end)
+  return(rel_to_val(data, var, benchmark))
+}
+
 
 # run_hector - function to run Hector using a given ini file and set of params
 #
@@ -105,14 +173,19 @@ run_hector <- function(ini_file, params, vals, yrs, vars, include_unc = F) {
   # Running core and fetching data
   run(core)
   data <- fetchvars(core, yrs, vars = vars)
+  shutdown(core)
   
-  # Adding in upper and lower bounds if desired
+  # Rescaling temperatures (if applicable)
+  if (GMST() %in% params) {
+    data <- rel_to_interval(data = data, var = GMST(), start = 1961, end = 1990)
+  }
+  
+  # Adding in upper and lower bounds (if applicable)
   if (include_unc) {
     data$upper <- data$value
     data$lower <- data$value
   }
   
-  shutdown(core)
   return(data)
 }
 

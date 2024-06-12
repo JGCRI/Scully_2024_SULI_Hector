@@ -24,7 +24,7 @@ data2 <- run_hector(ini_file,
                     params = ECS(), 
                     vals = 3.5, 
                     yrs = 2000:2005, 
-                    vars = c(GLOBAL_TAS(), CONCENTRATIONS_CO2()))
+                    vars = c(GMST(), CONCENTRATIONS_CO2()))
 
 data3 <- get_temp_data(TEMP_PATH)
 
