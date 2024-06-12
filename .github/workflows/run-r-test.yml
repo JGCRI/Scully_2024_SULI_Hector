@@ -6,7 +6,7 @@ on:
       - main
   pull_request:
     branches:
-      - '**'
+      - main
 
 jobs:
   run-r-script:
@@ -24,6 +24,7 @@ jobs:
     - name: Install R packages
       run: |
         Rscript -e 'install.packages(c("here", "assertthat"))'  # Add any packages your script needs
+
     - name: Run R script
       run: |
-        Rscript scripts/ex_test.R
+        Rscript test.R
