@@ -23,7 +23,8 @@ jobs:
 
     - name: Install R packages
       run: |
-        Rscript -e 'install.packages(c("here", "assertthat"))'  # Add any packages your script needs
+        Rscript -e 'install.packages(c("here", "assertthat", "remotes"))'  # Add any packages your script needs
+        Rscript -e 'remotes::install_github(repo = "JGCRI/hector")'
     - name: Run R script
       run: |
         Rscript scripts/ex_test.R
