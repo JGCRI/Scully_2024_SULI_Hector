@@ -320,11 +320,11 @@ objective_fn <- function(obs_data, ini_file, params, par, yrs, vars, error_fn,
 #                 error_fn (default: FALSE)
 #   output_file - path to file to append table to
 #
-# returns: Nothing, but outputs optimal parameters and objective function
-#          value to given output file
+# returns: Optimal parameters. Also outputs optimal parameters and objective 
+#          function value to given output file
 #
 # note: uses an error function from error_functions.R
-run_optim <- function(obj_fn, obs_data, ini_file, params, yrs, vars, error_fn, 
+run_optim <- function(obs_data, ini_file, params, yrs, vars, error_fn, 
                       include_unc = F, output_file) {
   # Creating vector of default parameters
   default_core <- newcore(ini_file)
@@ -333,7 +333,7 @@ run_optim <- function(obj_fn, obs_data, ini_file, params, yrs, vars, error_fn,
   
   # Applying optim
   optim_output <- optim(par = defaults, 
-                        fn = obj_fn, 
+                        fn = objective_fn, 
                         obs_data = obs_data, 
                         ini_file = ini_file, 
                         params = params,
@@ -357,6 +357,7 @@ run_optim <- function(obj_fn, obs_data, ini_file, params, yrs, vars, error_fn,
   # Output value of objective function
   write_metric("Objective Function Value:", min_error, output_file)
   
+  return(best_pars)
 }
 
 ##############################
