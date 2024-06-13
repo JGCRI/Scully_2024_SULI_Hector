@@ -347,7 +347,7 @@ run_optim <- function(obs_data, ini_file, params, yrs, vars, error_fn,
   min_error <- optim_output$value
   
   # Output optimal parameterization
-  write.table(data.frame(parameters = best_pars, values = min_error),
+  write.table(data.frame(parameters = params, values = best_pars),
               file = output_file,
               append = TRUE,
               quote = FALSE,
