@@ -235,6 +235,7 @@ run_hector <- function(ini_file, params, vals, yrs, vars, include_unc = F) {
              unit = getunits(params[i]))
     }
   }
+  reset(core)
   
   # Running core and fetching data
   run(core)
@@ -353,9 +354,11 @@ run_optim <- function(obs_data, ini_file, params, yrs, vars, error_fn,
               quote = FALSE,
               sep = "\t",
               row.names = FALSE)
+  write("", output_file, append = TRUE)
   
   # Output value of objective function
   write_metric("Objective Function Value:", min_error, output_file)
+  write("", output_file, append = TRUE)
   
   return(best_pars)
 }

@@ -75,5 +75,5 @@ mean_T_CO2_mse <- function(obs_data, hector_data) {
                          start = 1850, 
                          end = 2014)
   
-  return(mean(T_mse, CO2_mse))
+  return(mean(c(T_mse, CO2_mse)))
 }

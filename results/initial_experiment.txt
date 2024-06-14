@@ -1,36 +1,39 @@
 parameters	values
-beta	1.41481236546282
-q10_rh	3.12839498572927
-diff	0.875933457698434
-Objective Function Value: 0.0579
-CO2 MSE: 392
-T MSE:   0.0579
-RMSE:    19.8
+beta	0.518042137029941
+q10_rh	1.34005682551553
+diff	1.60569057789122
+
+Objective Function Value: 2.32
+
+CO2 MSE: 4.55
+T MSE:   0.0818
+RMSE:    2.13
+
 ***Key Metrics***
-TCRE: 1.48
-TCR:  2.05
+TCRE: 1.5
+TCR:  1.88
 
 ***Historical Warming and ERF***
-GSAT Warming:              0.532
-Ocean Heat Content Change: 261
+GSAT Warming:              0.777
+Ocean Heat Content Change: 433
 Total Aerosol ERF:         -1.24
-WMGHG ERF:                 3.08
-Methane ERF:               0.536
+WMGHG ERF:                 3.86
+Methane ERF:               0.541
 
 ***Future Warming***
 scenario	start	end	GSAT
-ssp119	2021	2040	0.663
-ssp119	2041	2060	0.703
-ssp119	2081	2100	0.488
-ssp126	2021	2040	0.68
-ssp126	2041	2060	0.902
-ssp126	2081	2100	0.8
-ssp245	2021	2040	0.687
-ssp245	2041	2060	1.14
-ssp245	2081	2100	1.64
-ssp370	2021	2040	0.698
-ssp370	2041	2060	1.29
-ssp370	2081	2100	2.7
-ssp585	2021	2040	0.842
-ssp585	2041	2060	1.67
-ssp585	2081	2100	3.65
+ssp119	2021	2040	0.767
+ssp119	2041	2060	0.911
+ssp119	2081	2100	0.655
+ssp126	2021	2040	0.783
+ssp126	2041	2060	1.11
+ssp126	2081	2100	1.06
+ssp245	2021	2040	0.789
+ssp245	2041	2060	1.34
+ssp245	2081	2100	2.01
+ssp370	2021	2040	0.801
+ssp370	2041	2060	1.49
+ssp370	2081	2100	3.03
+ssp585	2021	2040	0.927
+ssp585	2041	2060	1.83
+ssp585	2081	2100	3.94
