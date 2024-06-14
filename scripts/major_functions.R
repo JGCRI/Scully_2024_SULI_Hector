@@ -45,12 +45,13 @@ get_co2_data <- function(file, scenario = "historical") {
   
   # Reading in only CO2 data
   co2_data <- read.table(file, 
-                         skip = 25, 
+                         skip = 23, 
                          sep = ",",
                          colClasses = c("numeric", "numeric", "NULL", "NULL",
                                         "NULL", "NULL", "NULL", "NULL"))
   
-  # Fixing column names
+  # Fixing table formatting
+  co2_data <- na.omit(co2_data)
   colnames(co2_data) <- c("year", "value")
 
   # Adding in new columns to match Hector data frames

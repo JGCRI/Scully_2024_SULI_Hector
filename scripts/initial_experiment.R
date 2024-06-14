@@ -36,7 +36,7 @@ obs_data <- rbind(co2_data, temp_data)
 best_pars <- run_optim(obs_data = obs_data,
                        ini_file = INI_FILE,
                        params = PARAMS,
-                       yrs = 1850:2014,
+                       yrs = 1750:2014,
                        vars = c(GMST(), CONCENTRATIONS_CO2()),
                        error_fn = mean_T_CO2_mse,
                        output_file = OUTPUT)
@@ -45,19 +45,17 @@ best_pars <- run_optim(obs_data = obs_data,
 hector_data <- run_hector(ini_file = INI_FILE, 
                           params = PARAMS, 
                           vals = best_pars, 
-                          yrs = 1850:2014, 
+                          yrs = 1750:2014, 
                           vars = c(GMST(), CONCENTRATIONS_CO2()))
 
 T_mse <- get_var_mse(obs_data = obs_data, 
                      hector_data = hector_data, 
                      var = GMST(), 
-                     start = 1850, 
-                     end = 2014)
+                     yrs = 1850:2014)
 CO2_mse <- get_var_mse(obs_data = obs_data, 
                        hector_data = hector_data, 
                        var = CONCENTRATIONS_CO2(), 
-                       start = 1850, 
-                       end = 2014)
+                       yrs = c(1750, 1850:2014))
 
 write_metric("CO2 MSE:", CO2_mse, OUTPUT)
 write_metric("T MSE:  ", T_mse, OUTPUT)
