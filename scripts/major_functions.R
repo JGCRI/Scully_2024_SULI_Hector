@@ -317,9 +317,11 @@ objective_fn <- function(obs_data, ini_file, params, par, yrs, vars, error_fn,
 #   params      - vector of Hector parameters to modify
 #   par         - vector of initial values for params. Default is NULL, meaning
 #                 that Hector default parameters will be used as initial values
+#   sd          - vector of standard derivs for par. Only used if using LBFGS-B
 #   yrs         - year range to get Hector data from
 #   vars        - Hector variables to get data on
 #   error_fn    - function to calculate error between observed/predicted vals
+#   method      - optimization method to use. Default: Nelder-Mead
 #   include_unc - boolean indicating whether upper/lower bounds needed for 
 #                 error_fn (default: FALSE)
 #   output_file - path to file to append table to
@@ -328,8 +330,9 @@ objective_fn <- function(obs_data, ini_file, params, par, yrs, vars, error_fn,
 #          function value to given output file
 #
 # note: uses an error function from error_functions.R
-run_optim <- function(obs_data, ini_file, params, par = NULL, yrs, vars, 
-                      error_fn, include_unc = F, output_file) {
+run_optim <- function(obs_data, ini_file, params, par = NULL, sd = NULL, yrs, 
+                      vars, error_fn, include_unc = F, method = "Nelder-Mead",
+                      output_file) {
   # Creating vector of default parameters
   if (is.null(par)) {
     default_core <- newcore(ini_file)
@@ -338,15 +341,32 @@ run_optim <- function(obs_data, ini_file, params, par = NULL, yrs, vars,
   }
   
   # Applying optim
-  optim_output <- optim(par = par, 
-                        fn = objective_fn, 
-                        obs_data = obs_data, 
-                        ini_file = ini_file, 
-                        params = params,
-                        yrs = yrs,
-                        vars = vars, 
-                        error_fn = error_fn, 
-                        include_unc = include_unc)
+  if (method == "Nelder-Mead") {
+    optim_output <- optim(par = par, 
+                          fn = objective_fn, 
+                          obs_data = obs_data, 
+                          ini_file = ini_file, 
+                          params = params,
+                          yrs = yrs,
+                          vars = vars, 
+                          error_fn = error_fn, 
+                          include_unc = include_unc)
+  } else if (method == "L-BFGS-B") {
+    lower <- par - sd
+    upper <- par + sd
+    optim_output <- optim(par = par, 
+                          fn = objective_fn, 
+                          obs_data = obs_data, 
+                          ini_file = ini_file, 
+                          params = params,
+                          yrs = yrs,
+                          vars = vars, 
+                          error_fn = error_fn, 
+                          include_unc = include_unc,
+                          method = method,
+                          lower = lower,
+                          upper = upper)
+  }
   
   # Extract vals from optim output
   best_pars <- optim_output$par

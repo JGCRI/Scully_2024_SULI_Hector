@@ -37,9 +37,11 @@ best_pars <- run_optim(obs_data = obs_data,
                        ini_file = INI_FILE,
                        params = PARAMS,
                        par = c(0.5, 2.2, 2.3),
+                       sd = c(0.232, 0.44, 0.1),
                        yrs = 1750:2014,
                        vars = c(GMST(), CONCENTRATIONS_CO2()),
                        error_fn = mean_T_CO2_mse,
+                       method = "L-BFGS-B",
                        output_file = OUTPUT)
 
 ### Outputting individual MSEs ###
