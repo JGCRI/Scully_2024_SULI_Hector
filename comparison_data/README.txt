@@ -1,6 +1,8 @@
 CO2 data in co2_annmean_mlo.txt comes from NOAA data from Mauna Loa Observatory.
-
 Link to data: https://gml.noaa.gov/webdata/ccgg/trends/co2/co2_annmean_mlo.txt
+
+GHG data in Supplementary_Table_UoM_GHGConcentrations-1-1-0_annualmeans_v23March2017.csv
+comes from Meinshausen et al. 2017.
 
 
 

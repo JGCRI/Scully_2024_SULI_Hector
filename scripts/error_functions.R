@@ -21,6 +21,18 @@ mse <- function(x, y) {
   return(mean(SE))
 }
 
+# rmse - function to find root mean squared error between two vectors
+#
+# args: 
+#   x - observed values
+#   y - predicted values
+#
+# returns: numeric vector length 1 containing the RMSE between predicted and
+#          observed values
+rmse <- function(x, y) {
+  return(sqrt(mse(x, y)))
+}
+
 
 # get_var_mse: function to find MSE between observed and predicted data for
 #              a given variable
@@ -56,12 +68,12 @@ mean_T_CO2_mse <- function(obs_data, hector_data) {
                        hector_data = hector_data, 
                        var = GMST(), 
                        start = 1850, 
-                       end = 2021)
+                       end = 2014)
   CO2_mse <- get_var_mse(obs_data = obs_data, 
                          hector_data = hector_data, 
                          var = CONCENTRATIONS_CO2(), 
-                         start = 1959, 
-                         end = 2021)
+                         start = 1850, 
+                         end = 2014)
   
   return(mean(T_mse, CO2_mse))
 }

@@ -5,12 +5,16 @@
 
 ### Constants and Imports ###
 
+# Importing libraries
+library(hector)
+
 # Setting up file paths
 COMP_DATA_DIR <- file.path(here::here(), "comparison_data")
 SCRIPTS_DIR <- file.path(here::here(), "scripts")
 RESULTS_DIR <- file.path(here::here(), "results")
 
-CO2_PATH <- file.path(COMP_DATA_DIR, "co2_annmean_mlo.txt")
+CO2_PATH <- file.path(COMP_DATA_DIR,
+ "Supplementary_Table_UoM_GHGConcentrations-1-1-0_annualmeans_v23March2017.csv")
 TEMP_PATH <-
   file.path(COMP_DATA_DIR,
             "HadCRUT.5.0.2.0.analysis.summary_series.global.annual.csv")
@@ -20,8 +24,7 @@ PARAMS <- c(BETA(), Q10_RH(), DIFFUSIVITY())
 
 OUTPUT <- file.path(RESULTS_DIR, "initial_experiment.txt")
 
-# Importing libraries
-library(hector)
+
 source(file.path(SCRIPTS_DIR, "major_functions.R"))
 
 ### Getting observational data ###
@@ -33,7 +36,7 @@ obs_data <- rbind(co2_data, temp_data)
 best_pars <- run_optim(obs_data = obs_data,
                        ini_file = INI_FILE,
                        params = PARAMS,
-                       yrs = 1850:2024,
+                       yrs = 1850:2014,
                        vars = c(GMST(), CONCENTRATIONS_CO2()),
                        error_fn = mean_T_CO2_mse,
                        output_file = OUTPUT)
@@ -42,22 +45,23 @@ best_pars <- run_optim(obs_data = obs_data,
 hector_data <- run_hector(ini_file = INI_FILE, 
                           params = PARAMS, 
                           vals = best_pars, 
-                          yrs = 1850:2024, 
+                          yrs = 1850:2014, 
                           vars = c(GMST(), CONCENTRATIONS_CO2()))
 
 T_mse <- get_var_mse(obs_data = obs_data, 
                      hector_data = hector_data, 
                      var = GMST(), 
                      start = 1850, 
-                     end = 2021)
+                     end = 2014)
 CO2_mse <- get_var_mse(obs_data = obs_data, 
                        hector_data = hector_data, 
                        var = CONCENTRATIONS_CO2(), 
-                       start = 1959, 
-                       end = 2021)
+                       start = 1850, 
+                       end = 2014)
 
 write_metric("CO2 MSE:", CO2_mse, OUTPUT)
 write_metric("T MSE:  ", T_mse, OUTPUT)
+write_metric("RMSE:   ", sqrt(mean(CO2_mse, T_mse)), OUTPUT) # not 100% sure this is how we want to calculate this
 
 ### Outputting table metrics ###
 calc_table_metrics(PARAMS, best_pars, OUTPUT)

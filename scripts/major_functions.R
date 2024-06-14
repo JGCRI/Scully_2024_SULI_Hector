@@ -37,26 +37,26 @@ NONGHG_RF_VARS <- c(AEROSOL_RF_VARS, RF_VOL(), RF_ALBEDO(), RF_MISC())
 # args:
 #   file - path to historical CO2 data file
 #   scenario - name of scenario being run (default: "historical")
-#   include_unc - boolean indicating whether to include upper/lower bounds on
-#                 values (default: FALSE)
 #
 # returns: Hector-style data frame with CO2 data
-get_co2_data <- function(file, scenario = "historical", include_unc = F) {
-  co2_data <- read.table(file, skip = 43, col.names = c("year", "value", "unc"))
+#
+# Note: The current data set does not support including uncertainty values
+get_co2_data <- function(file, scenario = "historical") {
+  
+  # Reading in only CO2 data
+  co2_data <- read.table(file, 
+                         skip = 25, 
+                         sep = ",",
+                         colClasses = c("numeric", "numeric", "NULL", "NULL",
+                                        "NULL", "NULL", "NULL", "NULL"))
+  
+  # Fixing column names
+  colnames(co2_data) <- c("year", "value")
 
   # Adding in new columns to match Hector data frames
   co2_data$scenario <- scenario
   co2_data$variable <- CONCENTRATIONS_CO2()
   co2_data$units <- " ppmv CO2"
-
-  # Adding in upper and lower bounds, if desired
-  if (include_unc) {
-    co2_data$upper <- co2_data$value + co2_data$unc
-    co2_data$lower <- co2_data$value - co2_data$unc
-  }
-
-  # Removing uncertainty column
-  co2_data$unc <- NULL
 
   return(co2_data)
 }
@@ -571,7 +571,7 @@ calc_table_metrics <- function(params, vals, output_file) {
   
   
   ### OUTPUTTING RESULTS ###
-  write("***Key Metrics***", file = output_file)
+  write("***Key Metrics***", file = output_file, append = TRUE)
   write_metric("TCRE:", tcre, output_file)
   write_metric("TCR: ", tcr, output_file)
   write("", file = output_file, append = TRUE)
