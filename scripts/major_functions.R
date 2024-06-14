@@ -315,6 +315,8 @@ objective_fn <- function(obs_data, ini_file, params, par, yrs, vars, error_fn,
 #   obs_data    - Hector-style data frame with observed data
 #   ini_file    - path to the ini file to use to run Hector
 #   params      - vector of Hector parameters to modify
+#   par         - vector of initial values for params. Default is NULL, meaning
+#                 that Hector default parameters will be used as initial values
 #   yrs         - year range to get Hector data from
 #   vars        - Hector variables to get data on
 #   error_fn    - function to calculate error between observed/predicted vals
@@ -326,15 +328,17 @@ objective_fn <- function(obs_data, ini_file, params, par, yrs, vars, error_fn,
 #          function value to given output file
 #
 # note: uses an error function from error_functions.R
-run_optim <- function(obs_data, ini_file, params, yrs, vars, error_fn, 
-                      include_unc = F, output_file) {
+run_optim <- function(obs_data, ini_file, params, par = NULL, yrs, vars, 
+                      error_fn, include_unc = F, output_file) {
   # Creating vector of default parameters
-  default_core <- newcore(ini_file)
-  defaults <- fetchvars(default_core, dates = NA, vars = params)$value
-  shutdown(default_core)
+  if (is.null(par)) {
+    default_core <- newcore(ini_file)
+    par <- fetchvars(default_core, dates = NA, vars = params)$value
+    shutdown(default_core)
+  }
   
   # Applying optim
-  optim_output <- optim(par = defaults, 
+  optim_output <- optim(par = par, 
                         fn = objective_fn, 
                         obs_data = obs_data, 
                         ini_file = ini_file, 

@@ -1,3 +1,4 @@
+### Using correct error function without 1750 data point ###
 parameters	values
 beta	0.518042137029941
 q10_rh	1.34005682551553
@@ -38,7 +39,7 @@ ssp585	2021	2040	0.927
 ssp585	2041	2060	1.83
 ssp585	2081	2100	3.94
 
-# Including 1750 data point
+### Including 1750 data point ###
 parameters	values
 beta	0.518042137029941
 q10_rh	1.34005682551553
@@ -78,3 +79,44 @@ ssp370	2081	2100	3.03
 ssp585	2021	2040	0.927
 ssp585	2041	2060	1.83
 ssp585	2081	2100	3.94
+
+### Using non-default initial params from manuscript script ###
+parameters	values
+beta	0.515734854021045
+q10_rh	1.34801508295711
+diff	3.39856811890446
+
+Objective Function Value: 2.3
+
+CO2 MSE: 4.53
+T MSE:   0.0756
+RMSE:    2.13
+
+***Key Metrics***
+TCRE: 1.38
+TCR:  1.66
+
+***Historical Warming and ERF***
+GSAT Warming:              0.68
+Ocean Heat Content Change: 504
+Total Aerosol ERF:         -1.24
+WMGHG ERF:                 3.85
+Methane ERF:               0.539
+
+***Future Warming***
+scenario	start	end	GSAT
+ssp119	2021	2040	0.671
+ssp119	2041	2060	0.82
+ssp119	2081	2100	0.639
+ssp126	2021	2040	0.685
+ssp126	2041	2060	0.992
+ssp126	2081	2100	0.992
+ssp245	2021	2040	0.691
+ssp245	2041	2060	1.18
+ssp245	2081	2100	1.81
+ssp370	2021	2040	0.701
+ssp370	2041	2060	1.31
+ssp370	2081	2100	2.7
+ssp585	2021	2040	0.807
+ssp585	2041	2060	1.6
+ssp585	2081	2100	3.49
