@@ -1,0 +1,163 @@
+### Using correct error function without 1750 data point ###
+parameters	values
+beta	0.518042137029941
+q10_rh	1.34005682551553
+diff	1.60569057789122
+
+Objective Function Value: 2.32
+
+CO2 MSE: 4.55
+T MSE:   0.0818
+RMSE:    2.13
+
+***Key Metrics***
+TCRE: 1.5
+TCR:  1.88
+
+***Historical Warming and ERF***
+GSAT Warming:              0.777
+Ocean Heat Content Change: 433
+Total Aerosol ERF:         -1.24
+WMGHG ERF:                 3.86
+Methane ERF:               0.541
+
+***Future Warming***
+scenario	start	end	GSAT
+ssp119	2021	2040	0.767
+ssp119	2041	2060	0.911
+ssp119	2081	2100	0.655
+ssp126	2021	2040	0.783
+ssp126	2041	2060	1.11
+ssp126	2081	2100	1.06
+ssp245	2021	2040	0.789
+ssp245	2041	2060	1.34
+ssp245	2081	2100	2.01
+ssp370	2021	2040	0.801
+ssp370	2041	2060	1.49
+ssp370	2081	2100	3.03
+ssp585	2021	2040	0.927
+ssp585	2041	2060	1.83
+ssp585	2081	2100	3.94
+
+### Including 1750 data point ###
+parameters	values
+beta	0.518042137029941
+q10_rh	1.34005682551553
+diff	1.60569057789122
+
+Objective Function Value: 2.3
+
+CO2 MSE: 4.52
+T MSE:   0.0818
+RMSE:    2.13
+
+***Key Metrics***
+TCRE: 1.5
+TCR:  1.88
+
+***Historical Warming and ERF***
+GSAT Warming:              0.777
+Ocean Heat Content Change: 433
+Total Aerosol ERF:         -1.24
+WMGHG ERF:                 3.86
+Methane ERF:               0.541
+
+***Future Warming***
+scenario	start	end	GSAT
+ssp119	2021	2040	0.767
+ssp119	2041	2060	0.911
+ssp119	2081	2100	0.655
+ssp126	2021	2040	0.783
+ssp126	2041	2060	1.11
+ssp126	2081	2100	1.06
+ssp245	2021	2040	0.789
+ssp245	2041	2060	1.34
+ssp245	2081	2100	2.01
+ssp370	2021	2040	0.801
+ssp370	2041	2060	1.49
+ssp370	2081	2100	3.03
+ssp585	2021	2040	0.927
+ssp585	2041	2060	1.83
+ssp585	2081	2100	3.94
+
+### Using non-default initial params from manuscript script ###
+parameters	values
+beta	0.515734854021045
+q10_rh	1.34801508295711
+diff	3.39856811890446
+
+Objective Function Value: 2.3
+
+CO2 MSE: 4.53
+T MSE:   0.0756
+RMSE:    2.13
+
+***Key Metrics***
+TCRE: 1.38
+TCR:  1.66
+
+***Historical Warming and ERF***
+GSAT Warming:              0.68
+Ocean Heat Content Change: 504
+Total Aerosol ERF:         -1.24
+WMGHG ERF:                 3.85
+Methane ERF:               0.539
+
+***Future Warming***
+scenario	start	end	GSAT
+ssp119	2021	2040	0.671
+ssp119	2041	2060	0.82
+ssp119	2081	2100	0.639
+ssp126	2021	2040	0.685
+ssp126	2041	2060	0.992
+ssp126	2081	2100	0.992
+ssp245	2021	2040	0.691
+ssp245	2041	2060	1.18
+ssp245	2081	2100	1.81
+ssp370	2021	2040	0.701
+ssp370	2041	2060	1.31
+ssp370	2081	2100	2.7
+ssp585	2021	2040	0.807
+ssp585	2041	2060	1.6
+ssp585	2081	2100	3.49
+
+### Trying L-BFGS-B ###
+parameters	values
+beta	0.528263413949886
+q10_rh	1.76
+diff	2.4
+
+Objective Function Value: 2.33
+
+CO2 MSE: 4.57
+T MSE:   0.0772
+RMSE:    2.14
+
+***Key Metrics***
+TCRE: 1.51
+TCR:  1.76
+
+***Historical Warming and ERF***
+GSAT Warming:              0.73
+Ocean Heat Content Change: 472
+Total Aerosol ERF:         -1.24
+WMGHG ERF:                 3.87
+Methane ERF:               0.54
+
+***Future Warming***
+scenario	start	end	GSAT
+ssp119	2021	2040	0.729
+ssp119	2041	2060	0.894
+ssp119	2081	2100	0.717
+ssp126	2021	2040	0.744
+ssp126	2041	2060	1.08
+ssp126	2081	2100	1.1
+ssp245	2021	2040	0.749
+ssp245	2041	2060	1.29
+ssp245	2081	2100	1.98
+ssp370	2021	2040	0.76
+ssp370	2041	2060	1.43
+ssp370	2081	2100	2.93
+ssp585	2021	2040	0.876
+ssp585	2041	2060	1.74
+ssp585	2081	2100	3.79
