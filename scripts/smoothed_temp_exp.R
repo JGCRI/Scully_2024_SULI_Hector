@@ -1,4 +1,5 @@
 # Script to run smoothed temperature runs
+# To keep running mean of a different number of observations, change ROLL_WIDTH
 # Author: Peter Scully
 # Date: 6/17/24
 
