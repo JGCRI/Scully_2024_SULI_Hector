@@ -67,4 +67,4 @@ ggplot(data = comb_data, aes(x = year, y = value, color = scenario)) +
   geom_line() +
   facet_wrap(~ variable, scales = "free") +
   ggtitle("Comparing Parameterizations")
-ggsave(OUTPUT, width = 9)
+ggsave(OUTPUT, width = 15)
