@@ -64,5 +64,5 @@ get_var_mse_tests <- function() {
   
   
 }
-
 mse_tests()
+get_var_mse_tests()
