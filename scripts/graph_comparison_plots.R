@@ -22,7 +22,7 @@ TEMP_PATH <-
 INI_FILE <- system.file("input/hector_ssp245.ini", package = "hector")
 PARAMS <- c(BETA(), Q10_RH(), DIFFUSIVITY())
 
-OUTPUT <- file.path(RESULTS_DIR, "comparison_plots.jpeg")
+OUTPUT <- file.path(RESULTS_DIR, "exp1-8_comparison_plots.jpeg")
 
 
 source(file.path(SCRIPTS_DIR, "major_functions.R"))
@@ -52,7 +52,21 @@ nmse_data <- run_hector(ini_file = INI_FILE,
                         vars = c(GMST(), CONCENTRATIONS_CO2()))
 nmse_data$scenario <- "Hector - Fit to NMSEs"
 
-hector_data <- rbind(default_data, nmse_data)
+nmse_bb_data <- run_hector(ini_file = INI_FILE,
+                        params = PARAMS,
+                        vals = c(1.196, 3.52, 2),
+                        yrs = 1750:2014,
+                        vars = c(GMST(), CONCENTRATIONS_CO2()))
+nmse_bb_data$scenario <- "Hector - Fit to NMSEs, Big Box"
+
+nmse_bb_smooth_data <- run_hector(ini_file = INI_FILE,
+                        params = PARAMS,
+                        vals = c(1.147, 3.52, 2),
+                        yrs = 1750:2014,
+                        vars = c(GMST(), CONCENTRATIONS_CO2()))
+nmse_bb_smooth_data$scenario <- "Hector - NMSEs, Big Box, Smoothed"
+
+hector_data <- rbind(default_data, nmse_data, nmse_bb_data, nmse_bb_smooth_data)
 hector_data$lower <- hector_data$value
 hector_data$upper <- hector_data$value
 
@@ -62,7 +76,7 @@ ggplot(data = comb_data, aes(x = year, y = value, color = scenario)) +
   geom_ribbon(data = 
                filter(comb_data, scenario == "historical" & variable == GMST()),
               aes(ymin = lower, ymax = upper),
-              fill = 'aquamarine1',
+              fill = 'orchid1',
               color = NA) +
   geom_line() +
   facet_wrap(~ variable, scales = "free") +

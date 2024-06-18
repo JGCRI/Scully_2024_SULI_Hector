@@ -24,10 +24,10 @@ INI_FILE <- system.file("input/hector_ssp245.ini", package = "hector")
 
 # Setting other constants
 PARAMS <- c(BETA(), Q10_RH(), DIFFUSIVITY())
-ROLL_WIDTH <- 100
+ROLL_WIDTH <- 10
 
 OUTPUT <- file.path(RESULTS_DIR, 
-                    paste("smooth_temps_nmse_", ROLL_WIDTH, "yr.txt", sep=""))
+                    paste("smooth_temps_nmse_", ROLL_WIDTH, "yr_big_box.txt", sep=""))
 
 
 
@@ -52,8 +52,8 @@ obs_data <- rbind(co2_data, temp_data, smoothed_temp_data)
 best_pars <- run_optim(obs_data = obs_data,
                        ini_file = INI_FILE,
                        params = PARAMS,
-                       lower = c(0.5 - 0.232, 2.2 - 0.44, 2.3 - 0.1),
-                       upper = c(0.5 + 0.232, 2.2 + 0.44, 2.3 + 0.1),
+                       lower = c(0,               2.2 - 0.44 * 3, 2.3 - 0.1 * 3),
+                       upper = c(0.5 + 0.232 * 3, 2.2 + 0.44 * 3, 2.3 + 0.1 * 3),
                        yrs = 1750:2014,
                        vars = c(GMST(), CONCENTRATIONS_CO2()),
                        error_fn = smooth_T_CO2_nmse,
