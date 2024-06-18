@@ -53,12 +53,12 @@ get_co2_data <- function(file, scenario = "historical") {
   # Fixing table formatting
   co2_data <- na.omit(co2_data)
   colnames(co2_data) <- c("year", "value")
-
+  
   # Adding in new columns to match Hector data frames
   co2_data$scenario <- scenario
   co2_data$variable <- CONCENTRATIONS_CO2()
   co2_data$units <- " ppmv CO2"
-
+  
   return(co2_data)
 }
 
@@ -74,18 +74,18 @@ get_co2_data <- function(file, scenario = "historical") {
 get_temp_data <- function(file, scenario = "historical", include_unc = F) {
   temp_data <- read.csv(file)
   colnames(temp_data) <- c("year", "value", "lower", "upper")
-
+  
   # Adding in new columns to match Hector data frames
   temp_data$scenario <- scenario
   temp_data$variable <- GMST()
   temp_data$units <- "degC"
-
+  
   # Removing upper and lower bounds, if desired
   if (!include_unc) {
     temp_data$lower <- NULL
     temp_data$upper <- NULL
   }
-
+  
   return(temp_data)
 }
 
@@ -407,7 +407,7 @@ run_optim <- function(obs_data, ini_file, params, par = NULL, sd = NULL,
 #
 # returns: Nothing, but outputs table to given output file
 calc_table_metrics <- function(params, vals, output_file) {
-
+  
   ### KEY METRICS ###
   
   ## Finding TCRE ##

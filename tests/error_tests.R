@@ -4,6 +4,7 @@
 source(here::here("scripts", "error_functions.R"))
 
 library(assertthat)
+library(dplyr)
 
 # Confirming that mse works as expected
 mse_tests <- function() {
@@ -35,34 +36,29 @@ get_var_mse_tests <- function() {
   assert_that(get_var_mse(obs_data, 
                           hect_data, 
                           var = "CO2_concentrations", 
-                          start = 2000, 
-                          end = 2015) == 0)
+                          yrs = 2000:2015) == 0)
   
   assert_that(get_var_mse(obs_data, 
                           hect_data, 
                           var = "CO2_concentrations", 
-                          start = 2000, 
-                          end = 2000) == 0)
+                          yrs = 2000) == 0)
   
   assert_that(get_var_mse(obs_data, 
                           hect_data, 
                           var = "GMST", 
-                          start = 2000, 
-                          end = 2000) == 1)
+                          yrs = 2000) == 1)
   
   assert_that(get_var_mse(obs_data, 
                           hect_data, 
                           var = "GMST", 
-                          start = 2000, 
-                          end = 2001) == 0.5)
+                          yrs = 2000:2001) == 0.5)
   
   assert_that(get_var_mse(obs_data, 
                           hect_data, 
                           var = "GMST", 
-                          start = 2000, 
-                          end = 2004) == 3)
+                          yrs = 2000:2004) == 3)
   
   
 }
-
 mse_tests()
+get_var_mse_tests()
