@@ -317,7 +317,10 @@ objective_fn <- function(obs_data, ini_file, params, par, yrs, vars, error_fn,
 #   params      - vector of Hector parameters to modify
 #   par         - vector of initial values for params. Default is NULL, meaning
 #                 that Hector default parameters will be used as initial values
-#   sd          - vector of standard derivs for par. Only used if using LBFGS-B
+#   sd          - vector of standard derivs for par. Only used if using LBFGS-B.
+#                 If NULL, use provided lower and upper bounds
+#   lower       - lower bound for using LBFGS-B
+#   upper       - upper bound for using LBFGS-B
 #   yrs         - year range to get Hector data from
 #   vars        - Hector variables to get data on
 #   error_fn    - function to calculate error between observed/predicted vals
@@ -330,9 +333,9 @@ objective_fn <- function(obs_data, ini_file, params, par, yrs, vars, error_fn,
 #          function value to given output file
 #
 # note: uses an error function from error_functions.R
-run_optim <- function(obs_data, ini_file, params, par = NULL, sd = NULL, yrs, 
-                      vars, error_fn, include_unc = F, method = "Nelder-Mead",
-                      output_file) {
+run_optim <- function(obs_data, ini_file, params, par = NULL, sd = NULL, 
+                      lower = NULL, upper = NULL, yrs, vars, error_fn, 
+                      include_unc = F, method = "Nelder-Mead", output_file) {
   # Creating vector of default parameters
   if (is.null(par)) {
     default_core <- newcore(ini_file)
@@ -352,8 +355,10 @@ run_optim <- function(obs_data, ini_file, params, par = NULL, sd = NULL, yrs,
                           error_fn = error_fn, 
                           include_unc = include_unc)
   } else if (method == "L-BFGS-B") {
-    lower <- par - sd
-    upper <- par + sd
+    if (!is.null(sd)) {
+      lower <- par - sd
+      upper <- par + sd
+    }
     optim_output <- optim(par = par, 
                           fn = objective_fn, 
                           obs_data = obs_data, 
