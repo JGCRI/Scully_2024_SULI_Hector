@@ -37,11 +37,15 @@ NONGHG_RF_VARS <- c(AEROSOL_RF_VARS, RF_VOL(), RF_ALBEDO(), RF_MISC())
 # args:
 #   file - path to historical CO2 data file
 #   scenario - name of scenario being run (default: "historical")
+#   include_unc - boolean indicating whether to include upper/lower bound cols
+#                 (default: FALSE)
 #
 # returns: Hector-style data frame with CO2 data
 #
-# Note: The current data set does not support including uncertainty values
-get_co2_data <- function(file, scenario = "historical") {
+# Note: The current data set does not support including uncertainty values, so
+#       if uncertainty is included, upper/lower bound columns both equal the
+#       observed value
+get_co2_data <- function(file, scenario = "historical", include_unc = F) {
   
   # Reading in only CO2 data
   co2_data <- read.table(file, 
@@ -58,6 +62,11 @@ get_co2_data <- function(file, scenario = "historical") {
   co2_data$scenario <- scenario
   co2_data$variable <- CONCENTRATIONS_CO2()
   co2_data$units <- " ppmv CO2"
+  
+  if (include_unc) {
+    co2_data$upper <- co2_data$value
+    co2_data$lower <- co2_data$value
+  }
   
   return(co2_data)
 }

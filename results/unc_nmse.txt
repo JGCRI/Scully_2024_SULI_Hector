@@ -1,0 +1,42 @@
+parameters	values
+beta	0.732
+q10_rh	2.64
+diff	2.4
+
+Objective Function Value: 0.000714
+Counts: 9
+Counts: 9
+
+CO2 MSE: 58.5
+T MSE:   0.0651
+RMSE:    7.65
+T MSE accounting for unc: 0.0268
+
+***Key Metrics***
+TCRE: 1.53
+TCR:  1.76
+
+***Historical Warming and ERF***
+GSAT Warming:              0.633
+Ocean Heat Content Change: 423
+Total Aerosol ERF:         -1.24
+WMGHG ERF:                 3.63
+Methane ERF:               0.538
+
+***Future Warming***
+scenario	start	end	GSAT
+ssp119	2021	2040	0.694
+ssp119	2041	2060	0.842
+ssp119	2081	2100	0.693
+ssp126	2021	2040	0.709
+ssp126	2041	2060	1.02
+ssp126	2081	2100	1.05
+ssp245	2021	2040	0.715
+ssp245	2041	2060	1.23
+ssp245	2081	2100	1.9
+ssp370	2021	2040	0.725
+ssp370	2041	2060	1.37
+ssp370	2081	2100	2.86
+ssp585	2021	2040	0.842
+ssp585	2041	2060	1.68
+ssp585	2081	2100	3.71
