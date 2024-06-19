@@ -400,6 +400,10 @@ run_optim <- function(obs_data, ini_file, params, par = NULL, sd = NULL,
   
   # Output counts
   write_metric("Counts:", optim_output$counts, output_file)
+  
+  # Output convergence
+  write_metric("Convergence: ", optim_output$convergence, output_file)
+  write(paste("Messages:", optim_output$message), output_file, append = TRUE)
   write("", output_file, append = TRUE)
   
   return(best_pars)

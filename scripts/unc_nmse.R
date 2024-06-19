@@ -36,6 +36,7 @@ obs_data <- rbind(co2_data, temp_data)
 best_pars <- run_optim(obs_data = obs_data,
                        ini_file = INI_FILE,
                        params = PARAMS,
+                       par = c(0, 2.2 - 0.44*3, 2.6),
                        lower = c(0,               2.2 - 0.44 * 3, 2.3 - 0.1 * 3),
                        upper = c(0.5 + 0.232 * 3, 2.2 + 0.44 * 3, 2.3 + 0.1 * 3),
                        yrs = 1750:2014,
