@@ -1,5 +1,6 @@
 # Script to run smoothed temperature runs while accounting for T uncertainty
 # To keep running mean of a different number of observations, change ROLL_WIDTH
+# TODO: Still need to smooth upper/lower temperature bounds
 # Author: Peter Scully
 # Date: 6/17/24
 
