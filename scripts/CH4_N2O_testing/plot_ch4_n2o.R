@@ -5,6 +5,7 @@
 # Constants, imports
 library(hector)
 library(ggplot2)
+library(dplyr)
 
 COMP_DATA_DIR <- file.path(here::here(), "comparison_data")
 SCRIPTS_DIR <- file.path(here::here(), "scripts")
@@ -58,8 +59,31 @@ hect_data <- run_hector(INI_FILE,
                         vars = c(CONCENTRATIONS_CH4(), CONCENTRATIONS_N2O()))
 hect_data$scenario <- "Hector Default"
 
+### Gettting constrained data ###
+constr_df <- read.csv(system.file("input/tables/ssp245_emiss-constraints_rf.csv",
+                                  package = "hector"),
+                      skip = 5)
+constr_df <- constr_df[c("Date", "CH4_constrain", "N2O_constrain")]
+
+ch4_constr <- constr_df[c("Date", "CH4_constrain")]
+n2o_constr <- constr_df[c("Date", "N2O_constrain")]
+
+colnames(ch4_constr) <- c("year", "value")
+colnames(n2o_constr) <- c("year", "value")
+
+ch4_constr$variable <- CONCENTRATIONS_CH4()
+n2o_constr$variable <- CONCENTRATIONS_N2O()
+
+ch4_constr$units <- "ppb CH4"
+n2o_constr$units <- "ppb N2O"
+
+constr_data <- rbind(ch4_constr, n2o_constr)
+constr_data$scenario <- "constrained emissions"
+constr_data <- filter(constr_data, year %in% 1750:2014)
+
+
 ### Comparing Results ###
-comb_data <- rbind(obs_data, hect_data)
+comb_data <- rbind(obs_data, hect_data, constr_data)
 
 ggplot(data = comb_data, aes(x = year, y = value, color = scenario)) + 
   geom_line() +
