@@ -32,6 +32,7 @@ temp_data <- get_temp_data(TEMP_PATH)
 temp_data <- filter(temp_data, year <= 2014)
 
 obs_data <- rbind(co2_data, temp_data)
+obs_data$category <- "base"
 
 ### Running Hector ###
 all_data <- run_hector(ini_file = INI_FILE, 
@@ -40,6 +41,7 @@ all_data <- run_hector(ini_file = INI_FILE,
                            yrs = 1750:2014, 
                            vars = c(GMST(), CONCENTRATIONS_CO2()))
 all_data$scenario <- "default"
+all_data$category <- "base"
 
 # This is probably pretty inefficient
 for (diff in c(seq(0.8, 1.5, by =0.1), seq(2, 2.6, by=0.1))) {
@@ -49,6 +51,11 @@ for (diff in c(seq(0.8, 1.5, by =0.1), seq(2, 2.6, by=0.1))) {
                           yrs = 1750:2014,
                           vars = c(GMST(), CONCENTRATIONS_CO2()))
   curr_data$scenario <- paste("Diff =", diff)
+  if (diff < 2) {
+    curr_data$category <- "lower range"
+  } else {
+    curr_data$category <- "upper range"
+  }
   all_data <- rbind(all_data, curr_data)
 }
 
@@ -59,7 +66,7 @@ save(all_data, file = file.path(RESULTS_DIR, "diff_sens.rda"))
 comb_data <- rbind(obs_data, all_data)
 
 ggplot(data = comb_data, aes(x = year, y = value, color = scenario)) + 
-  geom_line() +
+  geom_line(aes(linetype = category)) +
   facet_wrap(~ variable, scales = "free") +
   ggtitle("Comparing Diffusivity Values")
 ggsave(OUTPUT, width = 15)
