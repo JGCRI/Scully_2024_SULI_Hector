@@ -1,0 +1,46 @@
+parameters	values
+beta	0.732
+q10_rh	2.64
+diff	2.2
+S	5
+alpha	1.15015020270593
+
+Objective Function Value: 0.000451
+Counts: 23
+Counts: 23
+Convergence:  0
+Messages: CONVERGENCE: REL_REDUCTION_OF_F <= FACTR*EPSMCH
+
+CO2 MSE: 50.3
+T MSE:   0.0457
+RMSE:    7.09
+T MSE accounting for unc: 0.017
+
+***Key Metrics***
+TCRE: 2.4
+TCR:  2.37
+
+***Historical Warming and ERF***
+GSAT Warming:              0.705
+Ocean Heat Content Change: 459
+Total Aerosol ERF:         -1.24
+WMGHG ERF:                 3.66
+Methane ERF:               0.539
+
+***Future Warming***
+scenario	start	end	GSAT
+ssp119	2021	2040	1
+ssp119	2041	2060	1.35
+ssp119	2081	2100	1.4
+ssp126	2021	2040	1.01
+ssp126	2041	2060	1.57
+ssp126	2081	2100	1.89
+ssp245	2021	2040	1
+ssp245	2041	2060	1.78
+ssp245	2081	2100	2.98
+ssp370	2021	2040	1
+ssp370	2041	2060	1.91
+ssp370	2081	2100	4.14
+ssp585	2021	2040	1.17
+ssp585	2041	2060	2.37
+ssp585	2081	2100	5.36
