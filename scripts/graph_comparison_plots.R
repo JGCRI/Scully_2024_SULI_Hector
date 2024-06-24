@@ -45,6 +45,7 @@ default_data <- run_hector(ini_file = INI_FILE,
                            vars = c(GMST(), CONCENTRATIONS_CO2()))
 default_data$scenario <- "Hector - Default Fit"
 
+
 # nmse_data <- run_hector(ini_file = INI_FILE,
 #                         params = PARAMS,
 #                         vals = c(0.732, 2.64, 2.4, 3, 1),
