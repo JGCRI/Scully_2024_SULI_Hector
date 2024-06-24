@@ -57,6 +57,7 @@ nmse_bb_data <- run_hector(ini_file = INI_FILE,
                         vals = c(1.084, 3.52, 2, 3),
                         yrs = 1750:2014,
                         vars = c(GMST(), CONCENTRATIONS_CO2()))
+
 nmse_bb_data$scenario <- "Hector - Fit to NMSEs w/ unc, big box"
 
 nmse_ecs_data <- run_hector(ini_file = INI_FILE,
