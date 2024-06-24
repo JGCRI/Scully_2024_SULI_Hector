@@ -253,7 +253,7 @@ run_hector <- function(ini_file, params, vals, yrs, vars, include_unc = F) {
   shutdown(core)
   
   # Rescaling temperatures (if applicable)
-  if (GMST() %in% params) {
+  if (GMST() %in% vars) {
     data <- rel_to_interval(data = data, var = GMST(), start = 1961, end = 1990)
   }
   
