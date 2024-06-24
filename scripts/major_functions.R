@@ -388,6 +388,9 @@ run_optim <- function(obs_data, ini_file, params, par = NULL, sd = NULL,
   
   # Output value of objective function
   write_metric("Objective Function Value:", min_error, output_file)
+  
+  # Output counts
+  write_metric("Counts:", optim_output$counts, output_file)
   write("", output_file, append = TRUE)
   
   return(best_pars)

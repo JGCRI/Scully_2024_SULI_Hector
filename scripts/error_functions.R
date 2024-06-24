@@ -43,7 +43,7 @@ rmse <- function(x, y) {
 # returns: numeric vector length 1 containing the NMSE between predicted and
 #          observed values
 nmse <- function(x, y) {
-  return(mse(x, y) / sum(x^2))
+  return(mse(x, y) / sum((x[!is.na(x)])^2))
 }
 
 
@@ -134,5 +134,34 @@ smooth_T_CO2_mse <- function(obs_data, hector_data) {
                          hector_data = hector_data, 
                          var = CONCENTRATIONS_CO2(), 
                          yrs = c(1750, 1850:2014))  
+  return(mean(c(T_mse, CO2_mse)))
+}
+
+
+# smooth_T_CO2_nmse: function to find mean of smoothed temperature and CO2 NMSEs
+#                    between observed & predicted data for a given variable
+#
+# args: 
+#   obs_data    - data frame of observed data formatted like Hector data frame
+#   hector_data - data frame outputted by Hector
+#
+# Returns: NMSE between predicted and observed data for var
+smooth_T_CO2_nmse <- function(obs_data, hector_data) {
+  
+  # Getting data frame with just smoothed data that works with get_var_mse
+  smooth_data <- filter(obs_data, variable == "Smooth T")
+  smooth_data$variable <- GMST()
+  
+  # Getting  mses
+  T_mse <- get_var_mse(obs_data = smooth_data, 
+                       hector_data = hector_data, 
+                       var = GMST(), 
+                       yrs = 1850:2014,
+                       mse_fn = nmse)
+  CO2_mse <- get_var_mse(obs_data = obs_data, 
+                         hector_data = hector_data, 
+                         var = CONCENTRATIONS_CO2(), 
+                         yrs = c(1750, 1850:2014),
+                         mse_fn = nmse)  
   return(mean(c(T_mse, CO2_mse)))
 }

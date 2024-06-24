@@ -52,14 +52,22 @@ nmse_data <- run_hector(ini_file = INI_FILE,
                         vars = c(GMST(), CONCENTRATIONS_CO2()))
 nmse_data$scenario <- "Hector - Fit to NMSEs"
 
-nmse_bigbox_data <- run_hector(ini_file = INI_FILE,
+nmse_bb_data <- run_hector(ini_file = INI_FILE,
                         params = PARAMS,
                         vals = c(1.196, 3.52, 2),
                         yrs = 1750:2014,
                         vars = c(GMST(), CONCENTRATIONS_CO2()))
-nmse_bigbox_data$scenario <- "Hector - Fit to NMSEs, Big Box"
 
-hector_data <- rbind(default_data, nmse_data, nmse_bigbox_data)
+nmse_bb_data$scenario <- "Hector - Fit to NMSEs, Big Box"
+
+nmse_bb_smooth_data <- run_hector(ini_file = INI_FILE,
+                        params = PARAMS,
+                        vals = c(1.147, 3.52, 2),
+                        yrs = 1750:2014,
+                        vars = c(GMST(), CONCENTRATIONS_CO2()))
+nmse_bb_smooth_data$scenario <- "Hector - NMSEs, Big Box, Smoothed"
+
+hector_data <- rbind(default_data, nmse_data, nmse_bb_data, nmse_bb_smooth_data)
 hector_data$lower <- hector_data$value
 hector_data$upper <- hector_data$value
 
