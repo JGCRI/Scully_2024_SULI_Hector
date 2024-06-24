@@ -22,7 +22,7 @@ TEMP_PATH <-
 INI_FILE <- system.file("input/hector_ssp245.ini", package = "hector")
 PARAMS <- c(BETA(), Q10_RH(), DIFFUSIVITY())
 
-OUTPUT <- file.path(RESULTS_DIR, "exp1-8_comparison_plots.jpeg")
+OUTPUT <- file.path(RESULTS_DIR, "nmse_box_comparison_plots.jpeg")
 
 
 source(file.path(SCRIPTS_DIR, "major_functions.R"))
@@ -57,6 +57,7 @@ nmse_bb_data <- run_hector(ini_file = INI_FILE,
                         vals = c(1.196, 3.52, 2),
                         yrs = 1750:2014,
                         vars = c(GMST(), CONCENTRATIONS_CO2()))
+
 nmse_bb_data$scenario <- "Hector - Fit to NMSEs, Big Box"
 
 nmse_bb_smooth_data <- run_hector(ini_file = INI_FILE,
