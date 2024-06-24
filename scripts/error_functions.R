@@ -111,6 +111,24 @@ nmse_unc <- function(x, x_upper, x_lower, y) {
            sum((x[!is.na(x)])^2))
 }
 
+# mvsse - function to find the mean variance-standardized squared error
+#
+# args: 
+#   x  - observed values
+#   sd - standard deviation of observed values
+#   y  - predicted values
+#
+# returns: numeric vector length 1 containing the NMSE between predicted and
+#          observed values
+mvsse <- function(x, sd, y) {
+  vsse <- (x - y)^2 / (sd)^2
+  return(mean(vsse))
+}
+
+
+#######################################
+### Single-Variable Error Functions ###
+#######################################
 
 # get_var_mse: function to find MSE between observed and predicted data for
 #              a given variable
@@ -155,6 +173,35 @@ get_var_mse_unc <- function(obs_data, hector_data, var, yrs, mse_fn) {
   
   return(mse_fn(x = x, x_upper = x_upper, x_lower = x_lower, y = y))
 }
+
+
+# get_var_mvsse: function to find MVSSE between observed and predicted data
+#                  for a given variable
+#
+# args: 
+#   obs_data    - data frame of observed data formatted like Hector data frame
+#   hector_data - data frame outputted by Hector
+#   var         - variable name
+#   yrs         - vector of years for finding MSE
+#
+# Returns: MSE between predicted and observed data for var
+#
+# Note: Assumes observed data contains symmetric upper and lower bounds 1 SD 
+#       away from actual value
+get_var_mse_unc <- function(obs_data, hector_data, var, yrs, mse_fn) {
+  x       <- filter(obs_data, year %in% yrs & variable == var)$value
+  x_upper <- filter(obs_data, year %in% yrs & variable == var)$upper
+  sd      <- x_upper - x
+  y       <- filter(hector_data, year %in% yrs & variable == var)$value
+  
+  return(mvsse(x = x, sd = sd, y = y))
+}
+
+
+#######################################
+### Error Functions for Optim Usage ###
+#######################################
+
 
 # mean_T_CO2_mse: function to find the mean of the temperature and CO2 MSEs 
 #                 between observed and predicted data for a given variable

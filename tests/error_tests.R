@@ -73,7 +73,7 @@ mse_unc_tests <- function() {
 }
 
 # Trying to use nmse_unc
-mse_unc_tests <- function() {
+nmse_unc_tests <- function() {
   assert_that(nmse_unc(10, 15, 5, 10) == 0)
   assert_that(nmse_unc(10, 15, 5, 0)  == .25)
   assert_that(nmse_unc(10, 15, 5, 20) == .25)
@@ -87,6 +87,9 @@ mse_unc_tests <- function() {
                        c(10, 7,  28)) == 9 / 625)
 }
 
+
+# Calling all testing functions
 mse_tests()
 get_var_mse_tests()
 mse_unc_tests()
+nmse_unc_tests()
