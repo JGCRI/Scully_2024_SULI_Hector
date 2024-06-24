@@ -57,8 +57,36 @@ get_var_mse_tests <- function() {
                           hect_data, 
                           var = "GMST", 
                           yrs = 2000:2004) == 3)
-  
-  
 }
+
+# Trying to use mse_unc
+mse_unc_tests <- function() {
+  assert_that(mse_unc(15, 5, 10) == 0)
+  assert_that(mse_unc(15, 5, 0)  == 25)
+  assert_that(mse_unc(15, 5, 20) == 25)
+  assert_that(mse_unc(c(15, 20, 25),
+                      c(5,  10, 15),
+                      c(10, 7,  28)) == 6)
+  assert_that(mse_unc(c(15, 20, 25),
+                      c(5,  10, 15),
+                      c(NA, 7,  28)) == 9)
+}
+
+# Trying to use nmse_unc
+mse_unc_tests <- function() {
+  assert_that(nmse_unc(10, 15, 5, 10) == 0)
+  assert_that(nmse_unc(10, 15, 5, 0)  == .25)
+  assert_that(nmse_unc(10, 15, 5, 20) == .25)
+  assert_that(nmse_unc(c(10, 15, 20),
+                       c(15, 20, 25),
+                       c(5,  10, 15),
+                       c(10, 7,  28)) == 6 / 725)
+  assert_that(nmse_unc(c(NA, 15, 20),
+                       c(NA, 20, 25),
+                       c(NA, 10, 15),
+                       c(10, 7,  28)) == 9 / 625)
+}
+
 mse_tests()
 get_var_mse_tests()
+mse_unc_tests()

@@ -4,10 +4,24 @@ Unnamed Hector core	NA	q10_rh	1.76	(unitless)
 Unnamed Hector core	NA	diff	2.38	cm2/s
 
 Mean of T, CO2 MSEs: 2.33
+Mean of T, CO2 NMSEs: 0.00204
+Mean of T, CO2 NMSEs (with unc): 0.00091
 
-CO2 MSE: 4.58
-T MSE:   0.0771
+Mean of smooth T, CO2 MSEs (k = 3 ): 2.32
+Mean of smooth T, CO2 NMSEs (k = 3 ): 0.00201
+Mean of smooth T, CO2 MSEs (k = 5 ): 2.32
+Mean of smooth T, CO2 NMSEs (k = 5 ): 0.00201
+Mean of smooth T, CO2 MSEs (k = 10 ): 2.32
+Mean of smooth T, CO2 NMSEs (k = 10 ): 0.00198
+
+CO2 MSE:        4.58
+T MSE:          0.0771
+T MSE with unc: 0.0343
 RMSE:    2.14
+
+CO2 NMSE: 2.74e-07
+T NMSE:   0.00409
+T NMSE with unc: 0.00182
 
 ***Key Metrics***
 TCRE: 1.51
