@@ -22,7 +22,7 @@ TEMP_PATH <-
 INI_FILE <- system.file("input/hector_ssp245.ini", package = "hector")
 PARAMS <- c(BETA(), Q10_RH(), DIFFUSIVITY(), ECS(), AERO_SCALE())
 
-OUTPUT <- file.path(RESULTS_DIR, "nmse_unc_comparison_plots.jpeg")
+OUTPUT <- file.path(RESULTS_DIR, "alpha_comparison_plots.jpeg")
 
 
 source(file.path(SCRIPTS_DIR, "major_functions.R"))
@@ -88,7 +88,8 @@ alpha_bb_data <- run_hector(ini_file = INI_FILE,
                             vars = c(GMST(), CONCENTRATIONS_CO2()))
 alpha_bb_data$scenario <- "Hector - NMSE w/ unc, Big Box Fit w/ S, Alpha"
 
-hector_data <- rbind(default_data, nmse_data, nmse_bb_data, ecs_data, ecs_bb_data, alpha_data, alpha_bb_data)
+#hector_data <- rbind(default_data, nmse_data, nmse_bb_data, ecs_data, ecs_bb_data, alpha_data, alpha_bb_data)
+hector_data <- rbind(default_data, alpha_data)
 hector_data$lower <- hector_data$value
 hector_data$upper <- hector_data$value
 
