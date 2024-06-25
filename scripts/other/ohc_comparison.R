@@ -153,12 +153,14 @@ obs_data <- get_ohc_data(OHC_FILE, include_unc = T)
 default_data <- calc_ohc(NULL, NULL, include_unc= T)
 reg_box_data <- calc_ohc(PARAMS, c(0.57, 1.76, 2.38, 2.95, 0.49), include_unc= T)
 low_diff_data <- calc_ohc(PARAMS, c(0.57, 1.76, 1.1, 2.95, 0.49), include_unc= T)
+ohc_optim_data <- calc_ohc(PARAMS, c(0.65, 1.76, 1.04, 2.33, 0.44), include_unc= T)
 
 default_data$scenario <- "Hector - Default"
 reg_box_data$scenario <- "Hector - All Params, Reg Box"
 low_diff_data$scenario <- "Hector - All Params, Reg Box, Diff = 1.1"
+ohc_optim_data$scenario <- "Hector - All Params, Reg Box, Matilda Diff, Optimize for OHC"
 
-comb_data <- rbind(obs_data, default_data, reg_box_data, low_diff_data)
+comb_data <- rbind(obs_data, default_data, reg_box_data, low_diff_data, ohc_optim_data)
 
 ggplot(data = comb_data, aes(x = year, y = value, color = scenario)) + 
   geom_ribbon(data = 

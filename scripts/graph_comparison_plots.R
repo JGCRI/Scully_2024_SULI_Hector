@@ -88,8 +88,15 @@ alpha_bb_data <- run_hector(ini_file = INI_FILE,
                             vars = c(GMST(), CONCENTRATIONS_CO2()))
 alpha_bb_data$scenario <- "Hector - NMSE w/ unc, Big Box Fit w/ S, Alpha"
 
+alpha_ohc_data <- run_hector(ini_file = INI_FILE,
+                         params = PARAMS,
+                         vals = c(0.65, 1.76, 1.04, 2.33, 0.438),
+                         yrs = 1750:2014,
+                         vars = c(GMST(), CONCENTRATIONS_CO2()))
+alpha_ohc_data$scenario <- "Hector - NMSE w/ unc (incl. OHC), Fit w/ S, Alpha"
+
 #hector_data <- rbind(default_data, nmse_data, nmse_bb_data, ecs_data, ecs_bb_data, alpha_data, alpha_bb_data)
-hector_data <- rbind(default_data, alpha_data)
+hector_data <- rbind(default_data, alpha_data, alpha_ohc_data)
 hector_data$lower <- hector_data$value
 hector_data$upper <- hector_data$value
 
