@@ -44,6 +44,44 @@ source(file.path(SCRIPTS_DIR, "major_functions.R"))
 #          2005-2014. Note that new data frame will only contain OHC values, not
 #          heat flux values
 calc_ohc <- function(params, vals, include_unc = F) {
+  
+  # Using an old version of run_hector for compatibility reasons
+  run_hector <- function(ini_file, params, vals, yrs, vars, include_unc = F) {
+    core <- newcore(ini_file)
+    
+    # Setting parameter values
+    if (!is.null(params)) {
+      for (i in 1:length(params)) {
+        setvar(core = core, 
+               dates = NA, 
+               var = params[i], 
+               values = vals[i], 
+               unit = getunits(params[i]))
+      }
+    }
+    reset(core)
+    
+    # Running core and fetching data
+    run(core)
+    data <- fetchvars(core, yrs, vars = vars)
+    shutdown(core)
+    
+    # Rescaling temperatures (if applicable)
+    if (GMST() %in% vars) {
+      data <- rel_to_interval(data = data, var = GMST(), start = 1961, end = 1990)
+    }
+    
+    # Adding in upper and lower bounds (if applicable)
+    if (include_unc) {
+      data$upper <- data$value
+      data$lower <- data$value
+    }
+    
+    return(data)
+  }
+  
+  
+  
   hect_data <- run_hector(INI_FILE, 
                           params = params, 
                           vals = vals, 
