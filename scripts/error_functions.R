@@ -415,3 +415,59 @@ smooth_T_CO2_nmse_unc <- function(obs_data, hector_data) {
                          mse_fn = nmse)  
   return(mean(c(T_mse, CO2_mse)))
 }
+
+
+# only_CO2_mse: function to find the CO2 MSE
+#               between observed and predicted data
+#
+# args: 
+#   obs_data    - data frame of observed data formatted like Hector data frame
+#   hector_data - data frame outputted by Hector
+#
+# Returns: MSE between predicted and observed data for CO2
+only_CO2_mse <- function(obs_data, hector_data) {
+  CO2_mse <- get_var_mse(obs_data = obs_data, 
+                         hector_data = hector_data, 
+                         var = CONCENTRATIONS_CO2(), 
+                         yrs = c(1750, 1850:2014))
+  
+  return(CO2_mse)
+}
+
+
+# only_T_mse_unc: function to find the MSE
+#                 between observed and predicted data for temperature
+#
+# args: 
+#   obs_data    - data frame of observed data formatted like Hector data frame
+#   hector_data - data frame outputted by Hector
+#
+# Returns: MSE between predicted and observed data for temperature
+only_T_mse_unc <- function(obs_data, hector_data) {
+  T_mse <- get_var_mse_unc(obs_data = obs_data, 
+                           hector_data = hector_data, 
+                           var = GMST(), 
+                           yrs = 1850:2014,
+                           mse_fn = mse_unc)
+  
+  return(T_mse)
+}
+
+
+# only_OHC_mse_unc: function to find the MSE
+#                   between observed and predicted data for OHC
+#
+# args: 
+#   obs_data    - data frame of observed data formatted like Hector data frame
+#   hector_data - data frame outputted by Hector
+#
+# Returns: MSE between predicted and observed data for OHC
+only_OHC_mse_unc <- function(obs_data, hector_data) {
+  OHC_mse <- get_var_mse_unc(obs_data = obs_data,
+                             hector_data = hector_data,
+                             var = "OHC",
+                             yrs = 1957:2014,
+                             mse_fn = mse_unc)
+  
+  return(OHC_mse)
+}
