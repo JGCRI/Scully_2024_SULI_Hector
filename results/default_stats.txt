@@ -8,6 +8,8 @@ Mean of T, CO2 NMSEs: 0.000948
 Mean of T, CO2 NMSEs (with unc): 0.000313
 Mean of T, CO2, OHC NMSEs (with unc): 0.00022
 Mean of T, CO2, OHC MVSSEs: 113
+Mean of T, CO2, OHC MAEs (with unc): 1.9
+Mean of T, CO2, OHC NMAEs (with unc): 0.0919
 
 Mean of smooth T, CO2 MSEs (k = 3 ): 2.3
 Mean of smooth T, CO2 NMSEs (k = 3 ): 0.000864
@@ -29,6 +31,14 @@ OHC NMSE with unc: 3.43e-05
 CO2 MVSSE: 318
 T MVSSE:   19.5
 OHC MVSSE: 1.02
+
+CO2 MAE: 1.7
+T MAE with unc:   0.0718
+OHC MAE with unc: 3.93
+
+CO2 NMAE: 0.00537
+T NMAE with unc:   0.247
+OHC NMAE with unc: 0.0232
 
 ***Key Metrics***
 TCRE: 1.51

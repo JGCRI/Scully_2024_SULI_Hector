@@ -76,6 +76,12 @@ write_metric("Mean of T, CO2, OHC NMSEs (with unc):",
 write_metric("Mean of T, CO2, OHC MVSSEs:",
              mean_T_CO2_OHC_mvsse(obs_data, hector_data),
              OUTPUT)
+write_metric("Mean of T, CO2, OHC MAEs (with unc):",
+             mean_T_CO2_OHC_mae_unc(obs_data, hector_data),
+             OUTPUT)
+write_metric("Mean of T, CO2, OHC NMAEs (with unc):",
+             mean_T_CO2_OHC_nmae_unc(obs_data, hector_data),
+             OUTPUT)
 write("", OUTPUT, append = TRUE)
 
 # Outputting smoothed MSEs
@@ -157,6 +163,40 @@ OHC_mvsse <- get_var_mvsse(obs_data = obs_data,
                            yrs = 1957:2014,
                            mse_fn = mvsse)
 
+# Getting MAEs
+T_mae_unc <- get_var_mse_unc(obs_data = obs_data, 
+                              hector_data = hector_data, 
+                              var = GMST(), 
+                              yrs = 1850:2014,
+                              mse_fn = mae_unc)
+CO2_mae <- get_var_mse(obs_data = obs_data, 
+                        hector_data = hector_data, 
+                        var = CONCENTRATIONS_CO2(), 
+                        yrs = c(1750, 1850:2014),
+                        mse_fn = mae)
+OHC_mae_unc <- get_var_mse_unc(obs_data = obs_data, 
+                                hector_data = hector_data, 
+                                var = "OHC", 
+                                yrs = 1957:2014,
+                                mse_fn = mae_unc)
+
+# Getting NMAEs
+T_nmae_unc <- get_var_mse_unc(obs_data = obs_data, 
+                             hector_data = hector_data, 
+                             var = GMST(), 
+                             yrs = 1850:2014,
+                             mse_fn = nmae_unc)
+CO2_nmae <- get_var_mse(obs_data = obs_data, 
+                       hector_data = hector_data, 
+                       var = CONCENTRATIONS_CO2(), 
+                       yrs = c(1750, 1850:2014),
+                       mse_fn = nmae)
+OHC_nmae_unc <- get_var_mse_unc(obs_data = obs_data, 
+                               hector_data = hector_data, 
+                               var = "OHC", 
+                               yrs = 1957:2014,
+                               mse_fn = nmae_unc)
+
 write_metric("CO2 MSE:       ", CO2_mse, OUTPUT)
 write_metric("T MSE:         ", T_mse, OUTPUT)
 write_metric("T MSE with unc:", T_mse_unc, OUTPUT)
@@ -170,6 +210,14 @@ write("", OUTPUT, append = TRUE)
 write_metric("CO2 MVSSE:", CO2_mvsse, OUTPUT)
 write_metric("T MVSSE:  ", T_mvsse, OUTPUT)
 write_metric("OHC MVSSE:", OHC_mvsse, OUTPUT)
+write("", OUTPUT, append = TRUE)
+write_metric("CO2 MAE:", CO2_mae, OUTPUT)
+write_metric("T MAE with unc:  ", T_mae_unc, OUTPUT)
+write_metric("OHC MAE with unc:", OHC_mae_unc, OUTPUT)
+write("", OUTPUT, append = TRUE)
+write_metric("CO2 NMAE:", CO2_nmae, OUTPUT)
+write_metric("T NMAE with unc:  ", T_nmae_unc, OUTPUT)
+write_metric("OHC NMAE with unc:", OHC_nmae_unc, OUTPUT)
 write("", OUTPUT, append = TRUE)
 
 ### Outputting table metrics ###
