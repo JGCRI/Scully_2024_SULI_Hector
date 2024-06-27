@@ -107,8 +107,12 @@ hector_data <- rbind(default_data, nmse_data, nmse_bb_data, ecs_data, alpha_data
 hector_data$lower <- hector_data$value
 hector_data$upper <- hector_data$value
 
+# Filtering data to look nice for graph
+hector_data <- filter(hector_data, variable == CONCENTRATIONS_CO2() | 
+                        (year >= 1850 & variable == GMST()))
+
+
 comb_data <- rbind(obs_data, hector_data)
-comb_data <- filter(comb_data, year >= 1850)
 
 ggplot(data = comb_data, aes(x = year, y = value, color = scenario)) + 
   geom_ribbon(data = 
@@ -116,7 +120,8 @@ ggplot(data = comb_data, aes(x = year, y = value, color = scenario)) +
               aes(ymin = lower, ymax = upper),
               fill = 'orchid1',
               color = NA) +
-  geom_line() +
+  geom_line(data = filter(comb_data, scenario != "historical" | year >= 1850)) +
+  geom_point(data = filter(comb_data, scenario == "historical" & year < 1850)) +
   facet_wrap(~ variable, scales = "free") +
   ggtitle("Comparing Parameterizations") +
   theme(legend.text = element_text(size = 15), legend.key.height = unit(2, "cm"))
