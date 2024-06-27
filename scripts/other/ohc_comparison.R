@@ -8,6 +8,7 @@
 # Importing libraries
 library(hector)
 library(ggplot2)
+theme_set(theme_bw(base_size = 20))
 
 # Setting up file paths
 COMP_DATA_DIR <- file.path(here::here(), "comparison_data")
@@ -157,10 +158,10 @@ ohc_optim_data <- calc_ohc(PARAMS, c(0.65, 1.76, 1.04, 2.33, 0.44), include_unc=
 nmae_ohc_optim_data <- calc_ohc(PARAMS, c(0.59, 1.76, 1.04, 2.17, 0.411), include_unc= T)
 
 default_data$scenario <- "Hector - Default"
-reg_box_data$scenario <- "Hector - All Params, Reg Box"
-low_diff_data$scenario <- "Hector - All Params, Reg Box, Diff = 1.1"
-ohc_optim_data$scenario <- "Hector - All Params, Reg Box, Matilda Diff, Optimize for OHC"
-nmae_ohc_optim_data$scenario <- "Hector - All Params, Reg Box, Matilda Diff, Optimize for OHC w/ NMAE"
+reg_box_data$scenario <- "Hector - Old Diff Range, \nNo OHC Optimization"
+low_diff_data$scenario <- "Hector - Diff = 1.1, \nNo OHC Optimization"
+ohc_optim_data$scenario <- "Hector - Matilda Diff, \nOptimize for OHC"
+nmae_ohc_optim_data$scenario <- "Hector - Matilda Diff, \nOptimize for OHC w/ NMAE"
 
 comb_data <- rbind(obs_data, default_data, reg_box_data, low_diff_data, ohc_optim_data, nmae_ohc_optim_data)
 
@@ -172,5 +173,6 @@ ggplot(data = comb_data, aes(x = year, y = value, color = scenario)) +
               color = NA) +
   geom_line() +
   facet_wrap(~ variable, scales = "free") +
-  ggtitle("Comparing Parameterizations")
+  ggtitle("Comparing Parameterizations") +
+  theme(legend.text = element_text(size = 15), legend.key.height = unit(2, "cm"))
 ggsave(OUTPUT, width = 15)

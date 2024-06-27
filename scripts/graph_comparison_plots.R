@@ -7,6 +7,7 @@
 # Importing libraries
 library(hector)
 library(ggplot2)
+theme_set(theme_bw(base_size = 20))
 
 # Setting up file paths
 COMP_DATA_DIR <- file.path(here::here(), "comparison_data")
@@ -22,7 +23,7 @@ TEMP_PATH <-
 INI_FILE <- system.file("input/hector_ssp245.ini", package = "hector")
 PARAMS <- c(BETA(), Q10_RH(), DIFFUSIVITY(), ECS(), AERO_SCALE())
 
-OUTPUT <- file.path(RESULTS_DIR, "nmae_comparison_plots.jpeg")
+OUTPUT <- file.path(RESULTS_DIR, "roundtable_comparison_plots.jpeg")
 
 
 source(file.path(SCRIPTS_DIR, "major_functions.R"))
@@ -43,7 +44,7 @@ default_data <- run_hector(ini_file = INI_FILE,
                            vals = NULL,
                            yrs = 1750:2014, 
                            vars = c(GMST(), CONCENTRATIONS_CO2()))
-default_data$scenario <- "Hector - Default Fit"
+default_data$scenario <- "Hector - Default"
 
 
 nmse_data <- run_hector(ini_file = INI_FILE,
@@ -51,63 +52,63 @@ nmse_data <- run_hector(ini_file = INI_FILE,
                         vals = c(0.268, 2.64, 2.2, 3, 1),
                         yrs = 1750:2014,
                         vars = c(GMST(), CONCENTRATIONS_CO2()))
-nmse_data$scenario <- "Hector - NMSE w/ unc Fit"
+nmse_data$scenario <- "Hector - NMSE w/ unc"
 
 nmse_bb_data <- run_hector(ini_file = INI_FILE,
                         params = PARAMS,
                         vals = c(0.028, 1.76, 2.6, 3, 1),
                         yrs = 1750:2014,
                         vars = c(GMST(), CONCENTRATIONS_CO2()))
-nmse_bb_data$scenario <- "Hector - NMSE w/ unc, Big Box Fit"
+nmse_bb_data$scenario <- "Hector - NMSE w/ unc \nBig Box"
 
 ecs_data <- run_hector(ini_file = INI_FILE,
                                   params = PARAMS,
                                   vals = c(0.268, 1.95, 2.6, 3.97, 1),
                                   yrs = 1750:2014,
                                   vars = c(GMST(), CONCENTRATIONS_CO2()))
-ecs_data$scenario <- "Hector - NMSE w/ unc, Fit w/ S"
+ecs_data$scenario <- "Hector - NMSE w/ unc \nTuning S"
 
 ecs_bb_data <- run_hector(ini_file = INI_FILE,
                        params = PARAMS,
                        vals = c(0.006, 1, 2.6, 3.16, 1),
                        yrs = 1750:2014,
                        vars = c(GMST(), CONCENTRATIONS_CO2()))
-ecs_bb_data$scenario <- "Hector - NMSE w/ unc, Big Box Fit w/ S"
+ecs_bb_data$scenario <- "Hector - NMSE w/ unc \nBig Box, Tuning S"
 
 alpha_data <- run_hector(ini_file = INI_FILE,
                        params = PARAMS,
                        vals = c(0.57, 1.76, 2.38, 2.96, 0.492),
                        yrs = 1750:2014,
                        vars = c(GMST(), CONCENTRATIONS_CO2()))
-alpha_data$scenario <- "Hector - NMSE w/ unc, Fit w/ S, Alpha"
+alpha_data$scenario <- "Hector - NMSE w/ unc \nTuning S, Alpha"
 
 alpha_bb_data <- run_hector(ini_file = INI_FILE,
                             params = PARAMS,
                             vals = c(0.502, 0.99, 2, 2.88, 0.5),
                             yrs = 1750:2014,
                             vars = c(GMST(), CONCENTRATIONS_CO2()))
-alpha_bb_data$scenario <- "Hector - NMSE w/ unc, Big Box Fit w/ S, Alpha"
+alpha_bb_data$scenario <- "Hector - NMSE w/ unc \nBig Box, Tuning S, Alpha"
 
 alpha_ohc_data <- run_hector(ini_file = INI_FILE,
                          params = PARAMS,
                          vals = c(0.65, 1.76, 1.04, 2.33, 0.438),
                          yrs = 1750:2014,
                          vars = c(GMST(), CONCENTRATIONS_CO2()))
-alpha_ohc_data$scenario <- "Hector - NMSE w/ unc (incl. OHC), Fit w/ S, Alpha"
+alpha_ohc_data$scenario <- "Hector - NMSE w/ unc, incl. OHC \nTuning S, Alpha"
 
 nmae_data <- run_hector(ini_file = INI_FILE,
                              params = PARAMS,
                              vals = c(0.59, 1.76, 1.04, 2.17, 0.411),
                              yrs = 1750:2014,
                              vars = c(GMST(), CONCENTRATIONS_CO2()))
-nmae_data$scenario <- "Hector - NMAE w/ unc (incl. OHC), Fit w/ S, Alpha"
+nmae_data$scenario <- "Hector - NMAE w/ unc, incl. OHC \nTuning S, Alpha"
 
-#hector_data <- rbind(default_data, nmse_data, nmse_bb_data, ecs_data, ecs_bb_data, alpha_data, alpha_bb_data)
-hector_data <- rbind(default_data, alpha_ohc_data, nmae_data)
+hector_data <- rbind(default_data, nmse_data, nmse_bb_data, ecs_data, alpha_data, alpha_ohc_data)
 hector_data$lower <- hector_data$value
 hector_data$upper <- hector_data$value
 
 comb_data <- rbind(obs_data, hector_data)
+comb_data <- filter(comb_data, year >= 1850)
 
 ggplot(data = comb_data, aes(x = year, y = value, color = scenario)) + 
   geom_ribbon(data = 
@@ -117,5 +118,6 @@ ggplot(data = comb_data, aes(x = year, y = value, color = scenario)) +
               color = NA) +
   geom_line() +
   facet_wrap(~ variable, scales = "free") +
-  ggtitle("Comparing Parameterizations")
+  ggtitle("Comparing Parameterizations") +
+  theme(legend.text = element_text(size = 15), legend.key.height = unit(2, "cm"))
 ggsave(OUTPUT, width = 16)

@@ -120,6 +120,11 @@ CO2_mse <- get_var_mse(obs_data = obs_data,
                        hector_data = hector_data, 
                        var = CONCENTRATIONS_CO2(), 
                        yrs = c(1750, 1850:2014))
+OHC_mse_unc <- get_var_mse_unc(obs_data = obs_data, 
+                             hector_data = hector_data, 
+                             var = "OHC", 
+                             yrs = 1957:2014,
+                             mse_fn = mse_unc)
 
 # Getting NMSEs
 T_nmse <- get_var_mse(obs_data = obs_data, 
@@ -197,9 +202,10 @@ OHC_nmae_unc <- get_var_mse_unc(obs_data = obs_data,
                                yrs = 1957:2014,
                                mse_fn = nmae_unc)
 
-write_metric("CO2 MSE:       ", CO2_mse, OUTPUT)
-write_metric("T MSE:         ", T_mse, OUTPUT)
-write_metric("T MSE with unc:", T_mse_unc, OUTPUT)
+write_metric("CO2 MSE:        ", CO2_mse, OUTPUT)
+write_metric("T MSE:          ", T_mse, OUTPUT)
+write_metric("T MSE with unc: ", T_mse_unc, OUTPUT)
+write_metric("OHC MSE with unc:", OHC_mse_unc, OUTPUT)
 write_metric("RMSE:   ", sqrt(mean(CO2_mse, T_mse)), OUTPUT) # not 100% sure this is how we want to calculate this
 write("", OUTPUT, append = TRUE)
 write_metric("CO2 NMSE:", CO2_nmse, OUTPUT)
