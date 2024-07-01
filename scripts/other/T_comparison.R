@@ -193,20 +193,22 @@ ggplot(data = comb_data, aes(x = year, y = value, color = exp)) +
   geom_ribbon(data = 
                filter(comb_data, scenario == "historical" & variable == GMST()),
               aes(ymin = lower, ymax = upper),
-              fill = 'hotpink2',
+              fill = 'grey',
               color = NA,
               alpha = 0.5) +
   # Plotting background runs
-  geom_line(data = filter(comb_data, exp == "Hector - Other Experiments" |
-                            (scenario == "historical" & year >= 1850)),
+  geom_line(data = filter(comb_data, exp == "Hector - Other Experiments"),
             aes(group = scenario)) +
   # Plotting foreground runs
+  geom_line(data = filter(comb_data, scenario == "historical" & year >= 1850),
+            linewidth = 0.6) +
   geom_line(data = filter(comb_data, exp != "Hector - Other Experiments" & 
-                            scenario != "historical")) +
+                            scenario != "historical"),
+            linewidth = 0.6) +
   
   # Cleaning up plot
   scale_color_manual(name = "Experiments",
-                     values = c("blue",  "#009E73","#D55E00", "grey", "#CC79A7")) + 
+                     values = c("blue",  "#009E73","#D55E00", "snow4", "black")) + 
   theme(legend.text = element_text(size = 15), 
         legend.key.height = unit(2, "cm")) +
   ylab("Temperature Anomaly (\u00B0C)") +
