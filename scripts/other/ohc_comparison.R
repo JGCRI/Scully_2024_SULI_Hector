@@ -44,6 +44,44 @@ source(file.path(SCRIPTS_DIR, "major_functions.R"))
 #          2005-2014. Note that new data frame will only contain OHC values, not
 #          heat flux values
 calc_ohc <- function(params, vals, include_unc = F) {
+  
+  # Using an old version of run_hector for compatibility reasons
+  run_hector <- function(ini_file, params, vals, yrs, vars, include_unc = F) {
+    core <- newcore(ini_file)
+    
+    # Setting parameter values
+    if (!is.null(params)) {
+      for (i in 1:length(params)) {
+        setvar(core = core, 
+               dates = NA, 
+               var = params[i], 
+               values = vals[i], 
+               unit = getunits(params[i]))
+      }
+    }
+    reset(core)
+    
+    # Running core and fetching data
+    run(core)
+    data <- fetchvars(core, yrs, vars = vars)
+    shutdown(core)
+    
+    # Rescaling temperatures (if applicable)
+    if (GMST() %in% vars) {
+      data <- rel_to_interval(data = data, var = GMST(), start = 1961, end = 1990)
+    }
+    
+    # Adding in upper and lower bounds (if applicable)
+    if (include_unc) {
+      data$upper <- data$value
+      data$lower <- data$value
+    }
+    
+    return(data)
+  }
+  
+  
+  
   hect_data <- run_hector(INI_FILE, 
                           params = params, 
                           vals = vals, 
@@ -115,12 +153,14 @@ obs_data <- get_ohc_data(OHC_FILE, include_unc = T)
 default_data <- calc_ohc(NULL, NULL, include_unc= T)
 reg_box_data <- calc_ohc(PARAMS, c(0.57, 1.76, 2.38, 2.95, 0.49), include_unc= T)
 low_diff_data <- calc_ohc(PARAMS, c(0.57, 1.76, 1.1, 2.95, 0.49), include_unc= T)
+ohc_optim_data <- calc_ohc(PARAMS, c(0.65, 1.76, 1.04, 2.33, 0.44), include_unc= T)
 
 default_data$scenario <- "Hector - Default"
 reg_box_data$scenario <- "Hector - All Params, Reg Box"
 low_diff_data$scenario <- "Hector - All Params, Reg Box, Diff = 1.1"
+ohc_optim_data$scenario <- "Hector - All Params, Reg Box, Matilda Diff, Optimize for OHC"
 
-comb_data <- rbind(obs_data, default_data, reg_box_data, low_diff_data)
+comb_data <- rbind(obs_data, default_data, reg_box_data, low_diff_data, ohc_optim_data)
 
 ggplot(data = comb_data, aes(x = year, y = value, color = scenario)) + 
   geom_ribbon(data = 
