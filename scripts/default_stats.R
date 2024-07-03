@@ -73,6 +73,9 @@ write_metric("Mean of T, CO2 NMSEs (with unc):",
 write_metric("Mean of T, CO2, OHC NMSEs (with unc):",
              mean_T_CO2_OHC_nmse_unc(obs_data, hector_data),
              OUTPUT)
+write_metric("Mean of T, CO2, OHC MVSSEs:",
+             mean_T_CO2_OHC_mvsse(obs_data, hector_data),
+             OUTPUT)
 write("", OUTPUT, append = TRUE)
 
 # Outputting smoothed MSEs
@@ -134,6 +137,26 @@ OHC_nmse_unc <- get_var_mse_unc(obs_data = obs_data,
                                 yrs = 1957:2014,
                                 mse_fn = nmse_unc)
 
+
+
+
+# Getting MVSSEs
+T_mvsse <- get_var_mvsse(obs_data = obs_data, 
+                         hector_data = hector_data, 
+                         var = GMST(), 
+                         yrs = 1850:2014,
+                         mse_fn = mvsse)
+CO2_mvsse <- get_var_mvsse(obs_data = obs_data, 
+                           hector_data = hector_data, 
+                           var = CONCENTRATIONS_CO2(), 
+                           yrs = c(1750, 1850:2014),
+                           mse_fn = mvsse)
+OHC_mvsse <- get_var_mvsse(obs_data = obs_data, 
+                           hector_data = hector_data, 
+                           var = "OHC", 
+                           yrs = 1957:2014,
+                           mse_fn = mvsse)
+
 write_metric("CO2 MSE:       ", CO2_mse, OUTPUT)
 write_metric("T MSE:         ", T_mse, OUTPUT)
 write_metric("T MSE with unc:", T_mse_unc, OUTPUT)
@@ -143,6 +166,10 @@ write_metric("CO2 NMSE:", CO2_nmse, OUTPUT)
 write_metric("T NMSE:  ", T_nmse, OUTPUT)
 write_metric("T NMSE with unc:", T_nmse_unc, OUTPUT)
 write_metric("OHC NMSE with unc:", OHC_nmse_unc, OUTPUT)
+write("", OUTPUT, append = TRUE)
+write_metric("CO2 MVSSE:", CO2_mvsse, OUTPUT)
+write_metric("T MVSSE:  ", T_mvsse, OUTPUT)
+write_metric("OHC MVSSE:", OHC_mvsse, OUTPUT)
 write("", OUTPUT, append = TRUE)
 
 ### Outputting table metrics ###

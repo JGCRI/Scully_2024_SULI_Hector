@@ -18,6 +18,9 @@ INPUT_TCR <- file.path(IDEAL_RUNS, "hector_1pctCO2.ini")
 OCEAN_AREA <- 5100656e8 * (1 - 0.29) # The total area of the ocean
 W_TO_ZJ <- 3.155693e-14              # Watts to ZJ
 
+# Other Numeric Constants
+CO2_OBS_SD <- 0.12
+
 # Constants for TCRE and ERF calculations
 EMISSIONS_VARS <- c(FFI_EMISSIONS(), LUC_EMISSIONS())
 UPTAKE_VARS <- c(LUC_UPTAKE(), DACCS_UPTAKE())
@@ -64,8 +67,8 @@ get_co2_data <- function(file, scenario = "historical", include_unc = F) {
   co2_data$units <- " ppmv CO2"
   
   if (include_unc) {
-    co2_data$upper <- co2_data$value
-    co2_data$lower <- co2_data$value
+    co2_data$upper <- co2_data$value + CO2_OBS_SD
+    co2_data$lower <- co2_data$value - CO2_OBS_SD
   }
   
   return(co2_data)
