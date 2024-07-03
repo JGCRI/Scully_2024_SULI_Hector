@@ -202,13 +202,15 @@ ggplot(data = comb_data, aes(x = year, y = value, color = exp)) +
             aes(group = scenario)) +
   # Plotting foreground runs
   geom_line(data = filter(comb_data, exp != "Hector - Other Experiments" & 
-                            scenario != "historical")) +
+                            scenario != "historical"),
+            aes(linetype = exp)) +
   # Plotting 1750 CO2 data point
   geom_point(data = filter(comb_data, scenario == "historical" & year < 1850)) +
   
   # Cleaning up plot
   scale_color_manual(name = "Experiments",
                      values = c("blue",  "#009E73","#D55E00", "snow4", "black")) + 
+  scale_linetype(guide = F) +
   theme(legend.text = element_text(size = 15), 
         legend.key.height = unit(2, "cm")) +
   ylab(expression('CO'[2]*' Concentration (ppmv)')) +
