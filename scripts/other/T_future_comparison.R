@@ -64,7 +64,7 @@ for (scen_counter in 1:length(scenario_files)) {
 
 # Plot results
 ggplot(data = future_results, aes(x = year, y = value, color = run)) + 
-  geom_line() +
+  geom_line(linewidth = 1.0) +
   facet_wrap(~ scenario) +
   
   # Cleaning up plot

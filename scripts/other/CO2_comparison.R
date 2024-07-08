@@ -197,13 +197,13 @@ ggplot(data = comb_data, aes(x = year, y = value, color = exp)) +
               color = NA,
               alpha = 0.5) +
   # Plotting background runs
-  geom_line(data = filter(comb_data, exp == "Hector - Other Experiments" |
-                            (scenario == "historical" & year >= 1850)),
+  geom_line(data = filter(comb_data, exp == "Hector - Other Experiments"),
             aes(group = scenario)) +
   # Plotting foreground runs
   geom_line(data = filter(comb_data, exp != "Hector - Other Experiments" & 
-                            scenario != "historical"),
-            aes(linetype = exp)) +
+                            (year >= 1850 | scenario != "historical")),
+            aes(linetype = exp),
+            linewidth = 1.5) +
   # Plotting 1750 CO2 data point
   geom_point(data = filter(comb_data, scenario == "historical" & year < 1850)) +
   

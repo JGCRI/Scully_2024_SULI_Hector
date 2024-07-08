@@ -201,10 +201,10 @@ ggplot(data = comb_data, aes(x = year, y = value, color = exp)) +
             aes(group = scenario)) +
   # Plotting foreground runs
   geom_line(data = filter(comb_data, scenario == "historical" & year >= 1850),
-            linewidth = 0.6) +
+            linewidth = 1) +
   geom_line(data = filter(comb_data, exp != "Hector - Other Experiments" & 
                             scenario != "historical"),
-            linewidth = 0.6) +
+            linewidth = 1) +
   
   # Cleaning up plot
   scale_color_manual(name = "Experiments",
