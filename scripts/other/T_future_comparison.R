@@ -27,7 +27,7 @@ source(file.path(SCRIPTS_DIR, "major_functions.R"))
 
 # Setting up variables
 future_yrs <- 1850:2100
-future_vars <- GMST()
+future_vars <- GLOBAL_TAS() # Using global_tas to match IPCC AR6 future metrics
 
 # Getting the names of each scenario file
 scenarios <- c("119", "245", "585")
