@@ -69,7 +69,7 @@ ggplot(data = future_results, aes(x = year, y = value, color = run)) +
   
   # Cleaning up plot
   scale_color_manual(name = "",
-                     values = c("blue",  "#009E73")) + 
+                     values = c("orange",  "blue")) + 
   theme(legend.text = element_text(size = 15), 
         legend.key.height = unit(2, "cm")) +
   ylab("Temperature Anomaly (\u00B0C)") +
