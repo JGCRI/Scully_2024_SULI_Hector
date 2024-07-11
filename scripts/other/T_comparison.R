@@ -1,4 +1,7 @@
-# Script to compare plots that use different hector variables
+# Script to compare plots that use different hector parameterizations
+# This script only makes a temperature plot
+# However, since it's based on a script to plot both CO2 and T, it 
+# (inefficiently) also records CO2 data
 # Author: Peter Scully
 # Date: 6/13/24
 
@@ -23,7 +26,7 @@ TEMP_PATH <-
 INI_FILE <- system.file("input/hector_ssp245.ini", package = "hector")
 PARAMS <- c(BETA(), Q10_RH(), DIFFUSIVITY(), ECS(), AERO_SCALE())
 
-OUTPUT <- file.path(RESULTS_DIR, "all_run_comparison_plots.jpeg")
+OUTPUT <- file.path(RESULTS_DIR, "all_run_T_comparison.jpeg")
 
 
 source(file.path(SCRIPTS_DIR, "major_functions.R"))
@@ -182,27 +185,34 @@ hector_data <- filter(hector_data, variable == CONCENTRATIONS_CO2() |
 obs_data$exp <- "Historical"
 comb_data <- rbind(obs_data, hector_data)
 
+#Filtering for temperature data only
+comb_data <- filter(comb_data, variable == GMST())
+
 ggplot(data = comb_data, aes(x = year, y = value, color = exp)) + 
   # Plotting uncertainty in Temperature
   geom_ribbon(data = 
                filter(comb_data, scenario == "historical" & variable == GMST()),
               aes(ymin = lower, ymax = upper),
-              fill = 'hotpink2',
+              fill = 'grey',
               color = NA,
               alpha = 0.5) +
   # Plotting background runs
-  geom_line(data = filter(comb_data, exp == "Hector - Other Experiments" |
-                            (scenario == "historical" & year >= 1850)),
+  geom_line(data = filter(comb_data, exp == "Hector - Other Experiments"),
             aes(group = scenario)) +
   # Plotting foreground runs
+  geom_line(data = filter(comb_data, scenario == "historical" & year >= 1850),
+            linewidth = 1.25) +
   geom_line(data = filter(comb_data, exp != "Hector - Other Experiments" & 
-                            scenario != "historical")) +
-  # Plotting 1750 CO2 data point
-  geom_point(data = filter(comb_data, scenario == "historical" & year < 1850)) +
+                            scenario != "historical"),
+            linewidth = 1.5,
+            aes(linetype = exp)) +
   
   # Cleaning up plot
-  facet_wrap(~ variable, scales = "free") +
-  ggtitle("Comparing Parameterizations") +
-  scale_color_manual(values = c("blue",  "#009E73","#D55E00", "grey", "#CC79A7")) + 
-  theme(legend.text = element_text(size = 15), legend.key.height = unit(2, "cm"))
-ggsave(OUTPUT, width = 16, height = 16)
+  scale_color_manual(name = "Experiments",
+                     values = c("orange", "blue", "#009E73", "snow4", "black"))  + 
+  scale_linetype(guide = "none") + 
+  theme(legend.text = element_text(size = 15), 
+        legend.key.height = unit(2, "cm")) +
+  ylab("Temperature Anomaly (\u00B0C)") +
+  xlab("Year")
+ggsave(OUTPUT, width = 12)
