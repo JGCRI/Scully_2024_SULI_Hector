@@ -209,7 +209,7 @@ ggplot(data = comb_data, aes(x = year, y = value, color = exp)) +
   
   # Cleaning up plot
   scale_color_manual(name = "Experiments",
-                     values = c("blue",  "#009E73","#D55E00", "snow4", "black")) + 
+                     values = c("orange", "blue", "#009E73", "snow4", "black")) + 
   scale_linetype(guide = F) +
   theme(legend.text = element_text(size = 15), 
         legend.key.height = unit(2, "cm")) +

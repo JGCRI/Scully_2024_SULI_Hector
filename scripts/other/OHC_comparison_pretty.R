@@ -173,7 +173,7 @@ hector_data <- filter(hector_data, variable == "OHC")
 obs_data$exp <- "Historical"
 comb_data <- rbind(obs_data, hector_data)
 
-#Filtering for CO2 data
+#Filtering for OHC data
 comb_data <- filter(comb_data, variable == "OHC")
 
 ggplot(data = comb_data, aes(x = year, y = value, color = exp)) + 
@@ -195,7 +195,7 @@ ggplot(data = comb_data, aes(x = year, y = value, color = exp)) +
   
   # Cleaning up plot
   scale_color_manual(name = "Experiments",
-                     values = c("blue",  "#009E73","#D55E00", "snow4", "black")) + 
+                     values = c("orange", "blue", "#009E73", "snow4", "black")) + 
   theme(legend.text = element_text(size = 15), 
         legend.key.height = unit(2, "cm")) +
   ylab(expression('Global Ocean Heat Content Anomaly (ZJ)')) +

@@ -201,14 +201,16 @@ ggplot(data = comb_data, aes(x = year, y = value, color = exp)) +
             aes(group = scenario)) +
   # Plotting foreground runs
   geom_line(data = filter(comb_data, scenario == "historical" & year >= 1850),
-            linewidth = 1) +
+            linewidth = 1.25) +
   geom_line(data = filter(comb_data, exp != "Hector - Other Experiments" & 
                             scenario != "historical"),
-            linewidth = 1) +
+            linewidth = 1.5,
+            aes(linetype = exp)) +
   
   # Cleaning up plot
   scale_color_manual(name = "Experiments",
-                     values = c("blue",  "#009E73","#D55E00", "snow4", "black")) + 
+                     values = c("orange", "blue", "#009E73", "snow4", "black"))  + 
+  scale_linetype(guide = "none") + 
   theme(legend.text = element_text(size = 15), 
         legend.key.height = unit(2, "cm")) +
   ylab("Temperature Anomaly (\u00B0C)") +
