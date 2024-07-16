@@ -61,3 +61,4 @@ best_pars <- run_optim(obs_data = obs_data,
                        method = "L-BFGS-B",
                        output_file = OUTPUT)
 ```
+If running a "big box"/"large range" run, you should also add `_big_box` to the end of the output file name (right before the file extension)
