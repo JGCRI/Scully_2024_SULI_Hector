@@ -11,3 +11,13 @@ Code and data related to historical calibration experiments by Hector's 2024 SUL
 -   scripts - directory containing all scripts used to run experiments and produce plots
 -   side_testing - directory containing files pertaining to checks to ensure other aspects of Hector are working properly
 -   tests - directory containing file with all the CI tests run to ensure error functions working properly
+
+## How to Run Experiments
+
+Each experiment can be run using the corresponding script in the experiments subdirectory of the scripts directory. A table of each experiment is given below:
+
+[TODO: Make table]
+
+## How to Create Figures
+
+The scripts for creating all figures used in the deliverables related to this project can be found in the deliverable_plot_making subdirectory of the scripts directory. All of these figures are output to the deliverable_plots subdirectory of the results directory.
