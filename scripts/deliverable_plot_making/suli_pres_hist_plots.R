@@ -35,12 +35,15 @@ source(file.path(SCRIPTS_DIR, "major_functions.R"))
 co2_data <- get_co2_data(CO2_PATH)
 co2_data$lower <- co2_data$value
 co2_data$upper <- co2_data$value
+co2_data$exp <- "Historical - Meinshausen et al. 2017"
 
 temp_data <- get_temp_data(TEMP_PATH, include_unc = T)
 temp_data <- filter(temp_data, year <= 2014)
+temp_data$exp <- "Historical - Morice et al. 2021"
 
 ohc_data <- get_ohc_data(OHC_PATH, include_unc = T)
 ohc_data <- filter(ohc_data, year <= 2014)
+ohc_data$exp <- "Historical - Kuhlbrodt et al. 2023"
 
 obs_data <- rbind(co2_data, temp_data, ohc_data)
 
@@ -187,7 +190,7 @@ hector_data <- filter(hector_data, variable == CONCENTRATIONS_CO2() |
                         (year >= 1850 & variable == GMST()) |
                         variable == "OHC")
 
-obs_data$exp <- "Historical"
+#obs_data$exp <- "Historical"
 comb_data <- rbind(obs_data, hector_data)
 
 ### Making plots ###
@@ -208,7 +211,7 @@ ggplot(data = temp_data, aes(x = year, y = value, color = exp)) +
             aes(group = scenario)) +
   # Plotting foreground runs
   geom_line(data = filter(temp_data, scenario == "historical" & year >= 1850),
-            linewidth = 1.25) +
+            linewidth = 1) +
   geom_line(data = filter(temp_data, exp != "Hector - Other Experiments" & 
                             scenario != "historical"),
             linewidth = 1) +
