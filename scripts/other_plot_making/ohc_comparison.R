@@ -1,4 +1,6 @@
-# Script to compare ocean heat content data from Hector with observations
+# Old script to compare ocean heat content data from Hector with observations
+# Note that this script predates OHC measurement being added to the original
+# run_hector function and is thus outdated
 # Author: Peter Scully
 # Date: 6/21/24
 

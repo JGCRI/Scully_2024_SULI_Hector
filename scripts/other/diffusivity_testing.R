@@ -1,4 +1,6 @@
 # Script to get diffusivity data from 20 runs with different diffusivity values
+# Goal: See how different diffusivity values (using both the Brown et al 2024
+# and Dorheim et al 2024 ranges) affect Hector's historical predictions
 # Author: Peter Scully
 # Date: 6/19/24
 

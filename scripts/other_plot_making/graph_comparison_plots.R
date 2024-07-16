@@ -1,4 +1,6 @@
 # Script to compare plots that use different hector variables
+# (This is a predecessor script to the script used to make the historical plots
+# for the deliverables)
 # Author: Peter Scully
 # Date: 6/13/24
 
@@ -12,7 +14,7 @@ theme_set(theme_bw(base_size = 20))
 # Setting up file paths
 COMP_DATA_DIR <- file.path(here::here(), "comparison_data")
 SCRIPTS_DIR <- file.path(here::here(), "scripts")
-RESULTS_DIR <- file.path(here::here(), "results")
+RESULTS_DIR <- file.path(here::here(), "results", "other_plots")
 
 CO2_PATH <- file.path(COMP_DATA_DIR,
                       "Supplementary_Table_UoM_GHGConcentrations-1-1-0_annualmeans_v23March2017.csv")

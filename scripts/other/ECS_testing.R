@@ -1,4 +1,5 @@
-# Script to get ECS data from 20 runs with different ECS values
+# Script to get ECS data from 20 runs with different ECS values to see how
+# changing it would affect Hector's historical predictions
 # Author: Peter Scully
 # Date: 6/19/24
 
