@@ -1,6 +1,8 @@
 # hector-calibration-summer-2024
 
-Code and data related to historical calibration experiments by Hector's 2024 SULI
+Code and data related to historical calibration experiments by Hector's 2024 SULI.
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.12775301.svg)](https://doi.org/10.5281/zenodo.12775301)
 
 ## Directories
 
