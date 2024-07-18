@@ -1,4 +1,6 @@
-# Title: Error functions
+# File containing functions for measuring error between observed and predicted
+# values (including functions for calculating error from Hector-style data 
+# frames)
 # Author: Peter Scully
 # Date: 6/11/24
 

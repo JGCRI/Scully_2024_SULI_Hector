@@ -1,4 +1,5 @@
-# Script to make plots to confirm that CH4, N2O data from Hector align w/ obs.
+# Script to make plots to confirm that CH4, N2O data from Hector default run 
+# align w/ obs.
 # Author: Peter Scully
 # Date: 6/19/24
 

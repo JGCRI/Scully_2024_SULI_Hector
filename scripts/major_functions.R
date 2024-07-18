@@ -1,4 +1,4 @@
-# Title: Major functions
+# File containing key functions used by many scripts 
 # Author: Peter Scully
 # Date: 6/11/24
 

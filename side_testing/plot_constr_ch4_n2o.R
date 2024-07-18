@@ -1,4 +1,5 @@
-# Script to make plots to confirm that CH4, N2O data from Hector align w/ obs.
+# Script to make plots to confirm that CH4, N2O constrained runs produce similar
+# results to default Hector run
 # Author: Peter Scully
 # Date: 6/19/24
 
@@ -54,6 +55,8 @@ n2o_constr <- constr_df$N2O_constrain
 
 ### Running constrained runs ###
 
+# Note that all runs need temperatures normalized to 1961-1990 to match hist data
+
 # CH4 constrained run
 core <- newcore(INI_FILE)
 setvar(core,
@@ -65,6 +68,10 @@ reset(core)
 
 run(core)
 ch4_constr_data <- fetchvars(core, 1750:2014, vars = PLOT_VARS)
+ch4_constr_data <- rel_to_interval(data = ch4_constr_data, 
+                                   var = GMST(), 
+                                   start = 1961, 
+                                   end = 1990)
 ch4_constr_data$scenario <- "[CH4] Constraints Only"
 shutdown(core)
 
@@ -79,6 +86,10 @@ reset(core)
 
 run(core)
 n2o_constr_data <- fetchvars(core, 1750:2014, vars = PLOT_VARS)
+n2o_constr_data <- rel_to_interval(data = n2o_constr_data, 
+                                   var = GMST(), 
+                                   start = 1961, 
+                                   end = 1990)
 n2o_constr_data$scenario <- "[N2O] Constraints Only"
 shutdown(core)
 
@@ -98,6 +109,10 @@ reset(core)
 
 run(core)
 both_constr_data <- fetchvars(core, 1750:2014, vars = PLOT_VARS)
+both_constr_data <- rel_to_interval(data = both_constr_data, 
+                                   var = GMST(), 
+                                   start = 1961, 
+                                   end = 1990)
 both_constr_data$scenario <- "Both Constraints"
 shutdown(core)
 

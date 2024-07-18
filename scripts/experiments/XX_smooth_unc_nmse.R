@@ -1,13 +1,17 @@
-# Script for experiment #9
-# Script to use normalized the T and CO2 MSEs while accounting for T uncertainty
-# manuscript
+# This script is INCOMPLETE and was not finished because we believed it was 
+# unlikely to provide a useful parameterization
+
+# Script to run smoothed temperature runs while accounting for T uncertainty
+# To keep running mean of a different number of observations, change ROLL_WIDTH
+# TODO: Still need to smooth upper/lower temperature bounds
 # Author: Peter Scully
-# Date: 6/13/24
+# Date: 6/17/24
 
 ### Constants and Imports ###
 
 # Importing libraries
 library(hector)
+library(zoo)
 
 # Setting up file paths
 COMP_DATA_DIR <- file.path(here::here(), "comparison_data")
@@ -21,28 +25,42 @@ TEMP_PATH <-
             "HadCRUT.5.0.2.0.analysis.summary_series.global.annual.csv")
 
 INI_FILE <- system.file("input/hector_ssp245.ini", package = "hector")
-PARAMS <- c(BETA(), Q10_RH(), DIFFUSIVITY())
 
-OUTPUT <- file.path(RESULTS_DIR, "09_unc_nmse_big_box.txt")
+# Setting other constants
+PARAMS <- c(BETA(), Q10_RH(), DIFFUSIVITY())
+ROLL_WIDTH <- 10
+
+OUTPUT <- file.path(RESULTS_DIR, 
+                    paste("smooth_unc_nmse_", ROLL_WIDTH, "yr.txt", sep=""))
+
 
 
 source(file.path(SCRIPTS_DIR, "major_functions.R"))
 
 ### Getting observational data ###
-co2_data <- get_co2_data(CO2_PATH, include_unc = TRUE)
-temp_data <- get_temp_data(TEMP_PATH, include_unc = TRUE)
-obs_data <- rbind(co2_data, temp_data)
+co2_data <- get_co2_data(CO2_PATH)
+temp_data <- get_temp_data(TEMP_PATH)
+
+# Smoothing temperatures
+smoothed_temps <- rollmean(temp_data$value, 
+                           k = ROLL_WIDTH, 
+                           align = "center",
+                           fill = NA)
+smoothed_temp_data <- temp_data
+smoothed_temp_data$variable <- "Smooth T"
+smoothed_temp_data$value <- smoothed_temps
+
+obs_data <- rbind(co2_data, temp_data, smoothed_temp_data)
 
 ### Calling optim ###
 best_pars <- run_optim(obs_data = obs_data,
                        ini_file = INI_FILE,
                        params = PARAMS,
-                       lower = c(0, 2.2 - 0.44 * 3, 2.3 - 0.1 * 3),
-                       upper = c(0.5 + 0.232 * 3, 2.2 + 0.44 * 3, 2.3 + 0.1 * 3),
+                       lower = c(0.5 - 0.232, 2.2 - 0.44, 2.3 - 0.1),
+                       upper = c(0.5 + 0.232, 2.2 + 0.44, 2.3 + 0.1),
                        yrs = 1750:2014,
                        vars = c(GMST(), CONCENTRATIONS_CO2()),
-                       error_fn = mean_T_CO2_nmse_unc,
-                       include_unc = T,
+                       error_fn = smooth_T_CO2_nmse_unc,
                        method = "L-BFGS-B",
                        output_file = OUTPUT)
 
@@ -61,16 +79,10 @@ CO2_mse <- get_var_mse(obs_data = obs_data,
                        hector_data = hector_data, 
                        var = CONCENTRATIONS_CO2(), 
                        yrs = c(1750, 1850:2014))
-T_mse_unc <- get_var_mse_unc(obs_data = obs_data,
-                             hector_data = hector_data,
-                             var = GMST(),
-                             yrs = 1850:2014,
-                             mse_fn = mse_unc)
 
 write_metric("CO2 MSE:", CO2_mse, OUTPUT)
 write_metric("T MSE:  ", T_mse, OUTPUT)
 write_metric("RMSE:   ", sqrt(mean(CO2_mse, T_mse)), OUTPUT) # not 100% sure this is how we want to calculate this
-write_metric("T MSE accounting for unc:", T_mse_unc, OUTPUT)
 write("", OUTPUT, append = TRUE)
 
 ### Outputting table metrics ###

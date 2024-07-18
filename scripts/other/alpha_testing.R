@@ -1,4 +1,5 @@
-# Script to get data from ~30 runs with different alpha values
+# Script to get data from ~30 runs with different alpha values to see how
+# changing it would affect historical predictions
 # Author: Peter Scully
 # Date: 6/21/24
 

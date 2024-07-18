@@ -1,4 +1,6 @@
 # Script to make smoothed temperature comparison plot
+# This script was used to check that smoothing was having the expected effect on
+# the historical data
 # Author: Peter Scully
 # Date: 6/17/24
 
@@ -10,7 +12,7 @@ library(ggplot2)
 # Setting up file paths
 COMP_DATA_DIR <- file.path(here::here(), "comparison_data")
 SCRIPTS_DIR <- file.path(here::here(), "scripts")
-RESULTS_DIR <- file.path(here::here(), "results")
+RESULTS_DIR <- file.path(here::here(), "results", "other_plots")
 
 CO2_PATH <- file.path(COMP_DATA_DIR,
                       "Supplementary_Table_UoM_GHGConcentrations-1-1-0_annualmeans_v23March2017.csv")
