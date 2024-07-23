@@ -125,7 +125,7 @@ exp12 <- run_hector(ini_file = INI_FILE,
                     vals = c(0.65, 1.76, 1.04, 2.33, 0.438),
                     yrs = 1750:2014,
                     vars = VARS)
-exp12$scenario <- "Hector - NMSE w/ unc, incl. OHC \nTuning S, Alpha"
+exp12$scenario <- "Hector - NMSE"
 
 exp13 <- run_hector(ini_file = INI_FILE,
                     params = PARAMS,
@@ -153,26 +153,39 @@ exp15 <- run_hector(ini_file = INI_FILE,
                     vals = c(0.57, 2.49, 1.06, 3.14, 1.08),
                     yrs = 1750:2014,
                     vars = VARS)
-exp15$scenario <- "Hector - MAE w/ unc, incl. OHC \nTuning S, Alpha"
+exp15$scenario <- "Hector - MAE" 
 
 exp16 <- run_hector(ini_file = INI_FILE,
                     params = PARAMS,
                     vals = c(0.59, 1.76, 1.04, 2.17, 0.411),
                     yrs = 1750:2014,
                     vars = VARS)
-exp16$scenario <- "Hector - NMAE w/ unc, incl. OHC \nTuning S, Alpha"
+exp16$scenario <- "Hector - NMAE"
+
+exp17 <- run_hector(ini_file = INI_FILE,
+                    params = PARAMS,
+                    vals = c(0.53, 1.86, 1.26, 2.87, 1.33),
+                    yrs = 1750:2014,
+                    vars = VARS)
+exp17$scenario <- "Hector - MSE"
+
 
 # Coloring all unimportant runs grey
 grey_data <- rbind(exp5_9A, exp5B, exp6B, exp8B, exp9B,  # NMSEs
                    exp10A, exp10B,                       # Add S
                    exp11A, exp11B,                               # Add alpha
-                   exp12,                                # Add OHC, Mat Diff
                    exp13,                                # Try MVSSE
                    exp14A, exp14B)
 grey_data$exp <- "Hector - Other Experiments"
+grey_data$metric <- "0"
 
 # Coloring important runs
-key_data <- rbind(default_data, exp5_9A,     # MSE runs
+default_data$metric <- "0"
+exp12$metric <- "norm"
+exp15$metric <- "reg"
+exp16$metric <- "norm"
+exp17$metric <- "reg"
+key_data <- rbind(default_data, exp12, exp17,     # MSE runs
                   exp15, exp16)             # MAE runs
 key_data$exp <- key_data$scenario
 
@@ -187,6 +200,7 @@ hector_data <- filter(hector_data, variable == CONCENTRATIONS_CO2() |
                         variable == "OHC")
 
 obs_data$exp <- "Historical"
+obs_data$metric <- "0"
 comb_data <- rbind(obs_data, hector_data)
 
 ### Making plots ###
@@ -211,11 +225,11 @@ ggplot(data = temp_data, aes(x = year, y = value, color = exp)) +
   geom_line(data = filter(temp_data, exp != "Hector - Other Experiments" & 
                             scenario != "historical"),
             linewidth = 1.5,
-            aes(linetype = exp)) +
+            aes(linetype = metric)) +
   
   # Cleaning up plot
   scale_color_manual(name = "Experiments",
-                     values = c("orange", "blue", "#009E73", "#CC79A7", "snow4", "black"))  + 
+                     values = c("orange", "skyblue", "blue", "#009E73", "#CC79A7", "snow4", "black"))  + 
   scale_linetype(guide = "none") + 
   theme(legend.text = element_text(size = 15), 
         legend.key.height = unit(2, "cm")) +
@@ -233,14 +247,21 @@ ggplot(data = co2_data, aes(x = year, y = value, color = exp)) +
   # Plotting foreground runs
   geom_line(data = filter(co2_data, exp != "Hector - Other Experiments" & 
                             (year >= 1850 | scenario != "historical")),
-            aes(linetype = exp),
-            linewidth = 1.5) +
+            aes(linetype = metric),
+            linewidth = 1) +
   # Plotting 1750 CO2 data point
   geom_point(data = filter(co2_data, scenario == "historical" & year < 1850)) +
   
   # Cleaning up plot
   scale_color_manual(name = "Experiments",
-                     values = c("orange", "blue", "#009E73", "#CC79A7", "snow4", "black")) + 
+                     values = c("orange", "skyblue", "blue", "#009E73", "#CC79A7", "snow4", "black"),
+                     labels = c("Hector - Default", 
+                                expression("Hector - MAE (CO"[2]*" RMSE = 1.95)"),
+                                expression("Hector - MSE (CO"[2]*" RMSE = 1.89)"),
+                                expression("Hector - NMAE (CO"[2]*" RMSE = 2.06)"),
+                                expression("Hector - NMSE (CO"[2]*" RMSE = 2.93)"),
+                                "Hector - Other Experiments",
+                                "Historical")) + 
   scale_linetype(guide = F) +
   theme(legend.text = element_text(size = 15), 
         legend.key.height = unit(2, "cm")) +
@@ -264,11 +285,13 @@ ggplot(data = ohc_data, aes(x = year, y = value, color = exp)) +
             aes(group = scenario)) +
   # Plotting foreground runs
   geom_line(data = filter(ohc_data, exp != "Hector - Other Experiments"),
-            linewidth = 1.0) +
+            linewidth = 1.0,
+            aes(linetype = metric)) +
   
   # Cleaning up plot
   scale_color_manual(name = "Experiments",
-                     values = c("orange", "blue", "#009E73", "#CC79A7", "snow4", "black")) + 
+                     values = c("orange", "skyblue", "blue", "#009E73", "#CC79A7", "snow4", "black")) + 
+  scale_linetype(guide = F) +
   theme(legend.text = element_text(size = 15), 
         legend.key.height = unit(2, "cm")) +
   ylab(expression('Global Ocean Heat Content Anomaly (ZJ)')) +
