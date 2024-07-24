@@ -48,4 +48,4 @@ Experiments with tripled parameter ranges were run for experiments 5-11 and 14. 
 
 ## How to Create Figures
 
-The scripts for creating all figures used in the deliverables related to this project can be found in the deliverable_plot_making subdirectory of the scripts directory. All of these figures are output to the deliverable_plots subdirectory of the results directory.
+The scripts for creating all figures used in the deliverables related to this project can be found in the deliverable_plot_making subdirectory of the scripts directory. All of these figures are output to the deliverable_plots subdirectory of the results directory. Note that, for the AGU plots, I included legends in the code to make the temperature and OHC plots but cropped them out on the actual poster.
