@@ -253,17 +253,17 @@ ggplot(data = co2_data, aes(x = year, y = value, color = exp)) +
   geom_point(data = filter(co2_data, scenario == "historical" & year < 1850)) +
   
   # Cleaning up plot
-  scale_color_manual(name = "Experiments",
+  scale_color_manual(name = expression(bold("Hector Runs")),
                      values = c("orange", "skyblue", "blue", "#009E73", "#CC79A7", "snow4", "black"),
-                     labels = c("Hector - Default", 
-                                expression("Hector - MAE (CO"[2]*" RMSE = 1.95)"),
-                                expression("Hector - MSE (CO"[2]*" RMSE = 1.89)"),
-                                expression("Hector - NMAE (CO"[2]*" RMSE = 2.06)"),
-                                expression("Hector - NMSE (CO"[2]*" RMSE = 2.93)"),
-                                "Hector - Other Experiments",
-                                "Historical")) + 
+                     labels = c("Default", 
+                                expression("MAE (CO"[2]*" RMSE = 1.95)"),
+                                expression("MSE (CO"[2]*" RMSE = 1.89)"),
+                                expression("NMAE (CO"[2]*" RMSE = 2.06)"),
+                                expression("NMSE (CO"[2]*" RMSE = 2.93)"),
+                                "Other Runs",
+                                "\n\n\nHistorical Data\n\n\n")) + 
   scale_linetype(guide = F) +
-  theme(legend.text = element_text(size = 15), 
+  theme(legend.text = element_text(size = 18), 
         legend.key.height = unit(2, "cm")) +
   ylab(expression('CO'[2]*' Concentration (ppmv)')) +
   xlab("Year")
