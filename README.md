@@ -30,9 +30,10 @@ Each experiment can be run using the corresponding script in the experiments sub
 | 14             | alpha        | No                | NMSE w/ unc    | CO2, T, OHC            |
 | 15             | S, alpha     | No                | MAE w/ unc     | CO2, T, OHC            |
 | 16             | S, alpha     | No                | NMAE w/ unc    | CO2, T, OHC            |
-| CO2 only (17A) | S, alpha     | No                | MSE            | CO2                    |
-| T only (17B)   | S, alpha     | No                | MSE w/ unc     | T                      |
-| OHC only (17C) | S, alpha     | No                | MSE w/ unc     | OHC                    |
+| 17             | S, alpha     | No                | MSE w/ unc     | CO2, T, OHC            |
+| CO2 only (18A) | S, alpha     | No                | MSE            | CO2                    |
+| T only (18B)   | S, alpha     | No                | MSE w/ unc     | T                      |
+| OHC only (18C) | S, alpha     | No                | MSE w/ unc     | OHC                    |
 
 Abbreviations Key:
 
