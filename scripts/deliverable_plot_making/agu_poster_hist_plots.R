@@ -261,7 +261,7 @@ ggplot(data = co2_data, aes(x = year, y = value, color = exp)) +
                                 expression("NMAE (CO"[2]*" RMSE = 2.06)"),
                                 expression("NMSE (CO"[2]*" RMSE = 2.93)"),
                                 "Other Runs",
-                                "\n\n\nHistorical Data\n\n\n")) + 
+                                "\n\n\nObservations\n\n\n")) + 
   scale_linetype(guide = F) +
   theme(legend.text = element_text(size = 18), 
         legend.key.height = unit(2, "cm")) +
